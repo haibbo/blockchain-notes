@@ -1,7 +1,7 @@
 # Hyperledger fabric 学习笔记
 
 ## 简介
-本系列文章, 是我学习fabric过程中的笔记. 记录使我理解的更加深刻.
+本系列文章, 是我学习fabric过程中的笔记. 
 
 ## 从一个例子开始
 
@@ -31,7 +31,7 @@ cd fabric-samples/first-network
 
 - 生成[证书信息(MSP)](generate_certs.md)
 - 生成 channel artifacts 
-  - 排序节点的创世区块
+  - 排序节点的[创世区块](genesis_block.md)
   - channel的配置交易
   - 锚节点的配置
 - 启动docker
