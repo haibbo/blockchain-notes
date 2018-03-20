@@ -1,7 +1,7 @@
 # Hyperledger fabric 学习笔记
 
 ## 简介
-本系列文章, 是我学习fabric过程中的笔记. 记录使我理解的更加深刻.
+本系列文章, 是我学习fabric过程中的笔记. 记录使我理解的更加深刻.
 
 ## 从一个例子开始
 
@@ -23,13 +23,13 @@ cd fabric-samples/first-network
 
 ## 启动BYFN 网络
 
-```sh
+```shell
 ./byfn.sh -m up # 启动网络
 ```
 
 上面这条命令就可以启动了这个fabric的网络, 并执行了一些操作, 下面是脚本背后具体的操作.
 
-- 生成证书信息(MSP)
+- 生成[证书信息(MSP)](generate_certs.md)
 - 生成 channel artifacts 
   - 排序节点的创世区块
   - channel的配置交易
