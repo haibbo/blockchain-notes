@@ -31,9 +31,9 @@ cd fabric-samples/first-network
 
 - 生成[证书信息(MSP)](generate_certs.md)
 - 生成 channel artifacts 
-  - 排序节点的[创世区块](genesis_block.md)
-  - channel的配置交易
-  - 锚节点的配置
+  - [创世区块](genesis_block.md)
+  - [channel的配置交易](config_tx.md)
+  - [锚节点更新](anchor_tx.md)
 - 启动docker
 - 创建channel 
 - Peer 节点加入通道
