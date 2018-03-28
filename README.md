@@ -36,8 +36,9 @@ cd fabric-samples/first-network
   - [锚节点更新](anchor_tx.md)
 - [启动docker](docker_start.md)
     - [Orderer启动之参数传递](orderer_start_paramaters.md)
-- 创建channel 
-- Peer 节点加入通道
+- [创建channel](create_channel.md)
+- [Peer 节点加入通道](Join_channel.md)
+    - [配置管理系统链码](CSCC.md)
 - 更新通道锚节点信息
 - 安装chaincode
 - 实例化chaincode
