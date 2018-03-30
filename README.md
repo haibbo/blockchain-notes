@@ -39,7 +39,7 @@ cd fabric-samples/first-network
 - [创建channel](create_channel.md)
 - [Peer 节点加入通道](Join_channel.md)
     - [配置管理系统链码](CSCC.md)
-- 更新通道锚节点信息
+- [更新通道锚节点信息](updateAnchorPeers.md)
 - 安装chaincode
 - 实例化chaincode
 - chaincode 调用
