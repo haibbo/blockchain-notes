@@ -41,7 +41,7 @@ cd fabric-samples/first-network
     - [配置管理系统链码](CSCC.md)
 - [更新通道锚节点信息](updateAnchorPeers.md)
 - [安装chaincode](install_chaincode.md)
-- 实例化chaincode
+- [实例化chaincode](instantiate_chaincode.md)
 - chaincode 调用
 - chaincode 查询
 
