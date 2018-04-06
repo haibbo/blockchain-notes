@@ -1,122 +1,51 @@
-## 实例化链码
+## 链码实例化
 
-### 客户端
+### 流程(客户端, Peer节点 和 链码容器)
 
-```shell
-peer chaincode instantiate -o orderer.example.com:7050 -C mychannel -n mycc -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "OR ('Org1MSP.member','Org2MSP.member')"
-```
+1. 客户端发送SignedProposal给背书节点
+   - ChanelID:mychannel 
+   - CCID.Name:lscc 
+   - Input Args: deploy + ChainID + CDS + policy + escc + vscc)
+2. 背书节点调用ProcessProposal 开始处理这个请求
+   1. 背书节点从Proposal, ChannelHeader, Signature,  重放和权限方面校验请求的有效性和合法性
+   2. 背书节点创建交易模拟器和上下文, 然后调用simulateProposal->callChaincode, 调用相关链码执行模拟
+   3. 背书节点根据传入的参数创建CCContext
+   4. 背书节点根据channel name和传入的参数 调用chaincode , ExecuteChaincode->Execute
+   5. Lunch启动chaincode, 因为当前我们调用的lscc, 已经启动, 所以Launch会直接返回
+   6. 创建Chaincode Message 类型为TRANSACTION
+   7. 调用ChainSupport.Execute()->sendExecuteMessage,  往handler.nextState 发送数据
+   8. processStream收取message, 进行状态切换,因为是在ready下收到TRANSACTION, 无状态切换
+   9. processStream通过与ChainCode已建立好的连接,把消息发出去ChatStream.Send.
+3. 链码端 通过 chatWithPeer收到消息
+   1. handleMessage 进行消息处理, 在ready收到TRANSACTION不会状态切换,但是会执行beforeTransaction
+   2. beforeTransaction->handleTransaction会调用LSCC的**Invoke**
+   3. 因为是deloy会调用executeDeploy,用GetState和账本交互,查询是否已经实例化过这个chaincode,  校验实例化策略, 生成ChaincodeData
+   4. 调用createChaincode->putState->handlePutState. 以chainname为key, chaincodeData为value存到账本里.
+   5. chaincode收到PUT_STATE调用enterBusyState触发RESPONSE 事件.发送RESPONSE给shim
+   6. shim 发送message给responseChannel.
+   7. 发送COMPLETE message给chaincode support, 切换到COMPLETE state.
+4. 背书节点从callChaincode返回到 ProcessProposal
+   1. 判断chainID是否是lscc, 并且是args 是depoy或upgrade, 这种情况下需要调用用户链码的Init
+   2. 根据要deploy的chaincode创建NewCCContext 
+   3. 调用Execute, 和最开始调用Execute类似. 这次执行的是 用户链码(mycc)的Init, 进行初始化
+   4. 调用Launch->launchAndWaitForRegister->Start 去生成docker文件, deploy image. 等待链码端发送REGISTER
+   5. 背书节点调用beforeRegisterEvent  并发送gREGISTER 给链码测. 在created收到REGISTER会进入established状态,调用enterEstablishedState->notifyDuringStartup 写readyNotify 通知已经启动
+   6. Notify使launchAndWaitForRegister 退出, 返回至Lunch, 并发送ready给链码, 最后返回到Execute()
+   7. 创建Chaincode Message 类型为INIT
+   8. 调用ChainSupport.Execute()->sendExecuteMessage,  往handler.nextState 发送数据
+   9. processStream收取message, 进行状态切换,因为是在ready下收到TRANSACTION, 无状态切换
+   10. processStream通过与ChainCode已建立好的连接,把Init消息发出去ChatStream.Send().
+   11. 之后会收到链码测的PUT_STATE, 执行enterBusyState调用模拟器txContext.txsimulator.SetState返回RESPONSE, 直到链码测回COMPLETE.
+   12. 回到callChaincode, 通过 GetTxSimulationResults获取读写集
+5. 背书节点从callChaincode返回到 ProcessProposal
+   1. 调用endorseProposal() 对读写集进行背书
+   2. 获取背书链码 escc
+   3. 开始新一轮的callChaincode 
+   4. ………………..省略流程,参考调用lscc, 之后会详解ESCC这个Chaincode
+6. 回到 ProcessProposal 返回给客户端RESPONSE
 
-- 在指定通道对安装过的链码进行实例化, 链码在实例化之前是和通道无关的, 实例化的时候才绑定通道.
-- 需提供初始化参数, 节点上会创建容器, 并调用链码的Init方法进行初始化操作
-- 实例化链码需要同时和Orderer和Peer节点打交道
-- 执行实例化的用户,必须有在此通道上的Write权限, 默认是Admin
-- 实例化可以指定背书策略,  这个例子的策略是, 组织1或组织2的任何一个member
-- 链码实例化后进入ready状态.
 
 
+步骤省略了如下步骤, 会放到之后的链码调用处解释:
 
-### 链码实例化过程
-
-
-
-![](_images/instantiate_cc_flow.png)
-
-### Peer节点
-
-客户端发过来的SignedProposal, 由Peer节点的系统链码LSCC的Invoke处理, 发现是DEPLOY,会调用executeDeploy.
-
-用户链码相关的代码都在core/chaincode路径下. 其中core/chaincode/shim包中的代码主要是供链码容器侧调用使用，其他代码主要是Peer侧使用. 
-
-系统链码并不运行在Docker容器内, 而是运行在Peer主进程内. 其他方面,系统链码和用户链码基本是一致的:
-
-- 需要shim层, 和Peer沟通
-- 操作账本需要利用shim.Chain-codeSubInterface提供的API
-- 链码状态机和Peer侧状态机
-
-```go
-func (lscc *LifeCycleSysCC) executeDeploy(stub shim.ChaincodeStubInterface, chainname string, depSpec []byte, policy []byte, escc []byte, vscc []byte) (*ccprovider.ChaincodeData, error) {
-	// 获取Signed Proposal中的CDS
-	cds, err := utils.GetChaincodeDeploymentSpec(depSpec)
-    
-	// 检查名字和版本, 和Install时类似.
-	lscc.isValidChaincodeName(cds.ChaincodeSpec.ChaincodeId.Name)
-	err = lscc.isValidChaincodeVersion(cds.ChaincodeSpec.ChaincodeId.Name, cds.ChaincodeSpec.ChaincodeId.Version)
-    // 做账号访问控制, 当前的实现是空
-	err = lscc.acl(stub, chainname, cds)
-
-    // 测试是否这个chaincode已经在LSCC中存在(实例化过)
-	_, err = lscc.getCCInstance(stub, cds.ChaincodeSpec.ChaincodeId.Name)
-
-	// 从文件系统中读出chaincode, 返回CDSPackage
-	ccpack, err := ccprovider.GetChaincodeFromFS(cds.ChaincodeSpec.ChaincodeId.Name, cds.ChaincodeSpec.ChaincodeId.Version)
-	
-	// 得到ChianCodaData
-	cd := ccpack.GetChaincodeData()
-
-	// 把ESCC VSCC名字赋值, 还有背书策略
-	cd.Escc = string(escc)
-	cd.Vscc = string(vscc)
-	cd.Policy = policy
-
-	// 获取实例化策略并用它evalutate 
-	cd.InstantiationPolicy, err = lscc.getInstantiationPolicy(chainname, ccpack)
-	err = lscc.checkInstantiationPolicy(stub, chainname, cd.InstantiationPolicy)
-    // 基于chaindata进行实例化
-	err = lscc.createChaincode(stub, cd)
-	return cd, err
-}
-//代码在core/scc/lscc/lscc.go
-```
-
-在core/scc/lscc/lscc.go中的函数调用顺序:
-
-1. createChaincode
-2. putChaincodeData(判断传入的是否是系统链码)
-3. stub.PutState 最终会调用到core/chaincode/shim/handler.go中的 handlePutState
-
-PutState是账本提供一个API, 用于添加或更新一对Key-value, 这对键值会被放到读写集中, 等待Committer验证后写到账本中.
-
-实例化链码, 要往账本里写入什么呢?
-
-```go
-func (lscc *LifeCycleSysCC) putChaincodeData(stub shim.ChaincodeStubInterface, cd *ccprovider.ChaincodeData) error {
-	.......
-	cdbytes, err := proto.Marshal(cd)
-	err = stub.PutState(cd.Name, cdbytes)
-
-	return err
-}
-//代码在core/scc/lscc/lscc.go 
-```
-
-ChaincodeData的定义如下:
-
-```go
-type ChaincodeData struct {    
-    // 链码名称   
-    Name string    
-    // 链码版本    
-    Version string    
-    // 链码的ESCC，默认是内置的escc
-     Escc string    
-    // 链码的VSCC，默认是内置的vscc    
-    Vscc string    
-    // 链码的背书策略    
-    Policy []byte    
-    // 链码源代码哈希和元数据哈希组成的
-    CDSData    Data []byte    
-    // 链码编号，预留字段    
-    Id []byte    
-    // 链码实例化策略    
-    InstantiationPolicy
-}
-type CDSData struct {    
-    // 链码源代码哈希=hash(chaincode)    
-    CodeHash []byte    
-    // 链码元数据哈希=hash(chaincodeName+chaincodeVersion)    
-    MetaDataHash []byte}
-}
-```
-
-以链码名为Key, ChaincodeData为value, 更新账本. 
-
+客户端收到RESPONSE会发送SIngedTX  给排序节点, 排序节点排好序后 发回给commter节点, 进行VSCC校验,写入账本.
