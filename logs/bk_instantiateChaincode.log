@@ -1,0 +1,302 @@
+~/c/f/first-network git:release ❯❯❯ peer chaincode instantiate -o orderer.example.com:7050 -C $CHANNEL_NAME -n mycc -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "OR    ('Org1MSP.member','Org2MSP.member')"                                                        ⏎
+2018-03-30 22:46:51.898 CST [chaincodeCmd] checkChaincodeCmdParams -> INFO 001 Using default escc
+2018-03-30 22:46:51.898 CST [chaincodeCmd] checkChaincodeCmdParams -> INFO 002 Using default vscc
+2018-03-30 22:47:31.463 CST [main] main -> INFO 003 Exiting.....
+
+
+Peer:
+
+2018-03-30 14:47:11.832 UTC [endorser] ProcessProposal -> DEBU 437 Entry
+2018-03-30 14:47:11.833 UTC [protoutils] ValidateProposalMessage -> DEBU 438 ValidateProposalMessage starts for signed proposal 0xc42153edb0
+2018-03-30 14:47:11.836 UTC [protoutils] validateChannelHeader -> DEBU 439 validateChannelHeader info: header type 3
+2018-03-30 14:47:11.837 UTC [protoutils] checkSignatureFromCreator -> DEBU 43a checkSignatureFromCreator starts
+2018-03-30 14:47:11.849 UTC [protoutils] checkSignatureFromCreator -> DEBU 43b checkSignatureFromCreator info: creator is &{Org1MSP a941a65e3c841216c90a76c196570430a65ff28323cde9a0eaa9c31bc34a83e3}
+2018-03-30 14:47:11.855 UTC [protoutils] checkSignatureFromCreator -> DEBU 43c checkSignatureFromCreator info: creator is valid
+2018-03-30 14:47:11.855 UTC [protoutils] checkSignatureFromCreator -> DEBU 43d checkSignatureFromCreator exists successfully
+2018-03-30 14:47:11.855 UTC [protoutils] validateChaincodeProposalMessage -> DEBU 43e validateChaincodeProposalMessage starts for proposal 0xc42231a410, header 0xc42153ede0
+2018-03-30 14:47:11.855 UTC [protoutils] validateChaincodeProposalMessage -> DEBU 43f validateChaincodeProposalMessage info: header extension references chaincode name:"lscc" 
+2018-03-30 14:47:11.855 UTC [endorser] ProcessProposal -> DEBU 440 processing txid: 04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f
+2018-03-30 14:47:11.855 UTC [fsblkstorage] retrieveTransactionByID -> DEBU 441 retrieveTransactionByID() - txId = [04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f]
+2018-03-30 14:47:11.855 UTC [lockbasedtxmgr] NewTxSimulator -> DEBU 442 constructing new tx simulator
+2018-03-30 14:47:11.855 UTC [lockbasedtxmgr] newLockBasedTxSimulator -> DEBU 443 constructing new tx simulator [5b60c35f-ebff-4344-a49f-62df8758eb5f]
+2018-03-30 14:47:11.856 UTC [endorser] simulateProposal -> DEBU 444 Entry - txid: 04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f channel id: mychannel
+2018-03-30 14:47:11.856 UTC [endorser] callChaincode -> DEBU 445 Entry - txid: 04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f channel id: mychannel version: 1.0.6
+2018-03-30 14:47:11.856 UTC [ccprovider] NewCCContext -> DEBU 446 NewCCCC (chain=mychannel,chaincode=lscc,version=1.0.6,txid=04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f,syscc=true,proposal=0xc42231a410,canname=lscc:1.0.6
+2018-03-30 14:47:11.856 UTC [chaincode] Launch -> DEBU 447 chaincode is running(no need to launch) : lscc:1.0.6
+2018-03-30 14:47:11.856 UTC [chaincode] Execute -> DEBU 448 Entry
+2018-03-30 14:47:11.856 UTC [chaincode] Execute -> DEBU 449 chaincode canonical name: lscc:1.0.6
+2018-03-30 14:47:11.856 UTC [chaincode] sendExecuteMessage -> DEBU 44a [04f0cde8]Inside sendExecuteMessage. Message TRANSACTION
+2018-03-30 14:47:11.856 UTC [chaincode] setChaincodeProposal -> DEBU 44b Setting chaincode proposal context...
+2018-03-30 14:47:11.856 UTC [chaincode] setChaincodeProposal -> DEBU 44c Proposal different from nil. Creating chaincode proposal context...
+2018-03-30 14:47:11.856 UTC [chaincode] sendExecuteMessage -> DEBU 44d [04f0cde8]sendExecuteMsg trigger event TRANSACTION
+2018-03-30 14:47:11.857 UTC [chaincode] processStream -> DEBU 44e [04f0cde8]Move state message TRANSACTION
+2018-03-30 14:47:11.857 UTC [chaincode] HandleMessage -> DEBU 44f [04f0cde8]Fabric side Handling ChaincodeMessage of type: TRANSACTION in state ready
+2018-03-30 14:47:11.857 UTC [chaincode] filterError -> DEBU 450 Ignoring NoTransitionError: no transition
+2018-03-30 14:47:11.857 UTC [chaincode] processStream -> DEBU 451 [04f0cde8]sending state message TRANSACTION
+2018-03-30 14:47:11.857 UTC [shim] func1 -> DEBU 452 [04f0cde8]Received message TRANSACTION from shim
+2018-03-30 14:47:11.857 UTC [shim] handleMessage -> DEBU 453 [04f0cde8]Handling ChaincodeMessage of type: TRANSACTION(state:ready)
+2018-03-30 14:47:11.857 UTC [shim] beforeTransaction -> DEBU 454 [04f0cde8]Received TRANSACTION, invoking transaction on chaincode(Src:ready, Dst:ready)
+2018-03-30 14:47:11.893 UTC [shim] handleGetState -> DEBU 455 [04f0cde8]Sending GET_STATE
+2018-03-30 14:47:11.893 UTC [chaincode] processStream -> DEBU 456 [04f0cde8]Received message GET_STATE from shim
+2018-03-30 14:47:11.893 UTC [chaincode] HandleMessage -> DEBU 457 [04f0cde8]Fabric side Handling ChaincodeMessage of type: GET_STATE in state ready
+2018-03-30 14:47:11.893 UTC [chaincode] afterGetState -> DEBU 458 [04f0cde8]Received GET_STATE, invoking get state from ledger
+2018-03-30 14:47:11.900 UTC [chaincode] filterError -> DEBU 459 Ignoring NoTransitionError: no transition
+2018-03-30 14:47:11.909 UTC [chaincode] func1 -> DEBU 45a [04f0cde8] getting state for chaincode lscc, key mycc, channel mychannel
+2018-03-30 14:47:11.914 UTC [stateleveldb] GetState -> DEBU 45b GetState(). ns=lscc, key=mycc
+2018-03-30 14:47:11.925 UTC [chaincode] func1 -> DEBU 45c [04f0cde8]No state associated with key: mycc. Sending RESPONSE with an empty payload
+2018-03-30 14:47:11.926 UTC [chaincode] 1 -> DEBU 45d [04f0cde8]handleGetState serial send RESPONSE
+2018-03-30 14:47:11.926 UTC [shim] func1 -> DEBU 45e [04f0cde8]Received message RESPONSE from shim
+2018-03-30 14:47:11.926 UTC [shim] handleMessage -> DEBU 45f [04f0cde8]Handling ChaincodeMessage of type: RESPONSE(state:ready)
+2018-03-30 14:47:11.926 UTC [shim] sendChannel -> DEBU 460 [04f0cde8]before send
+2018-03-30 14:47:11.926 UTC [shim] sendChannel -> DEBU 461 [04f0cde8]after send
+2018-03-30 14:47:11.926 UTC [shim] afterResponse -> DEBU 462 [04f0cde8]Received RESPONSE, communicated (state:ready)
+2018-03-30 14:47:11.926 UTC [shim] handleGetState -> DEBU 463 [04f0cde8]GetState received payload RESPONSE
+2018-03-30 14:47:11.931 UTC [shim] handlePutState -> DEBU 464 [04f0cde8]Inside putstate
+2018-03-30 14:47:11.931 UTC [shim] handlePutState -> DEBU 465 [04f0cde8]Sending PUT_STATE
+2018-03-30 14:47:11.931 UTC [chaincode] processStream -> DEBU 466 [04f0cde8]Received message PUT_STATE from shim
+2018-03-30 14:47:11.931 UTC [chaincode] HandleMessage -> DEBU 467 [04f0cde8]Fabric side Handling ChaincodeMessage of type: PUT_STATE in state ready
+2018-03-30 14:47:11.931 UTC [chaincode] filterError -> DEBU 468 Ignoring NoTransitionError: no transition
+2018-03-30 14:47:11.935 UTC [chaincode] func1 -> DEBU 469 [04f0cde8]state is ready
+2018-03-30 14:47:11.936 UTC [chaincode] func1 -> DEBU 46a [04f0cde8]Completed PUT_STATE. Sending RESPONSE
+2018-03-30 14:47:11.937 UTC [chaincode] 1 -> DEBU 46b [04f0cde8]enterBusyState trigger event RESPONSE
+2018-03-30 14:47:11.942 UTC [chaincode] processStream -> DEBU 46c [04f0cde8]Move state message RESPONSE
+2018-03-30 14:47:11.942 UTC [chaincode] HandleMessage -> DEBU 46d [04f0cde8]Fabric side Handling ChaincodeMessage of type: RESPONSE in state ready
+2018-03-30 14:47:11.943 UTC [chaincode] filterError -> DEBU 46e Ignoring NoTransitionError: no transition
+2018-03-30 14:47:11.943 UTC [chaincode] processStream -> DEBU 46f [04f0cde8]sending state message RESPONSE
+2018-03-30 14:47:11.943 UTC [shim] func1 -> DEBU 470 [04f0cde8]Received message RESPONSE from shim
+2018-03-30 14:47:11.943 UTC [shim] handleMessage -> DEBU 471 [04f0cde8]Handling ChaincodeMessage of type: RESPONSE(state:ready)
+2018-03-30 14:47:11.943 UTC [shim] sendChannel -> DEBU 472 [04f0cde8]before send
+2018-03-30 14:47:11.943 UTC [shim] sendChannel -> DEBU 473 [04f0cde8]after send
+2018-03-30 14:47:11.943 UTC [shim] afterResponse -> DEBU 474 [04f0cde8]Received RESPONSE, communicated (state:ready)
+2018-03-30 14:47:11.943 UTC [shim] handlePutState -> DEBU 475 [04f0cde8]Received RESPONSE. Successfully updated state
+2018-03-30 14:47:11.944 UTC [shim] func1 -> DEBU 476 [04f0cde8]Transaction completed. Sending COMPLETED
+2018-03-30 14:47:11.944 UTC [shim] func1 -> DEBU 477 [04f0cde8]Move state message COMPLETED
+2018-03-30 14:47:11.944 UTC [shim] handleMessage -> DEBU 478 [04f0cde8]Handling ChaincodeMessage of type: COMPLETED(state:ready)
+2018-03-30 14:47:11.944 UTC [shim] func1 -> DEBU 479 [04f0cde8]send state message COMPLETED
+2018-03-30 14:47:11.945 UTC [chaincode] processStream -> DEBU 47a [04f0cde8]Received message COMPLETED from shim
+2018-03-30 14:47:11.945 UTC [chaincode] HandleMessage -> DEBU 47b [04f0cde8]Fabric side Handling ChaincodeMessage of type: COMPLETED in state ready
+2018-03-30 14:47:11.945 UTC [chaincode] HandleMessage -> DEBU 47c [04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f]HandleMessage- COMPLETED. Notify
+2018-03-30 14:47:11.945 UTC [chaincode] notify -> DEBU 47d notifying Txid:04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f
+2018-03-30 14:47:11.945 UTC [chaincode] Execute -> DEBU 47e Exit
+
+
+2018-03-30 14:47:11.946 UTC [ccprovider] NewCCContext -> DEBU 47f NewCCCC (chain=mychannel,chaincode=mycc,version=1.0,txid=04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f,syscc=false,proposal=0xc42231a410,canname=mycc:1.0
+2018-03-30 14:47:11.946 UTC [chaincode] Launch -> DEBU 480 launchAndWaitForRegister fetched 2431 bytes from file system
+2018-03-30 14:47:11.946 UTC [chaincode] launchAndWaitForRegister -> DEBU 481 chaincode mycc:1.0 is being launched
+2018-03-30 14:47:11.946 UTC [chaincode] getArgsAndEnv -> DEBU 482 Executable is chaincode
+2018-03-30 14:47:11.947 UTC [chaincode] getArgsAndEnv -> DEBU 483 Args [chaincode -peer.address=peer0.org1.example.com:7051]
+2018-03-30 14:47:11.947 UTC [chaincode] launchAndWaitForRegister -> DEBU 484 start container: mycc:1.0(networkid:dev,peerid:peer0.org1.example.com)
+2018-03-30 14:47:11.947 UTC [chaincode] launchAndWaitForRegister -> DEBU 485 start container with args: chaincode -peer.address=peer0.org1.example.com:7051
+2018-03-30 14:47:11.947 UTC [chaincode] launchAndWaitForRegister -> DEBU 486 start container with env:
+CORE_CHAINCODE_ID_NAME=mycc:1.0
+CORE_PEER_TLS_ENABLED=false
+CORE_CHAINCODE_LOGGING_LEVEL=info
+CORE_CHAINCODE_LOGGING_SHIM=warning
+CORE_CHAINCODE_LOGGING_FORMAT=%{color}%{time:2006-01-02 15:04:05.000 MST} [%{module}] %{shortfunc} -> %{level:.4s} %{id:03x}%{color:reset} %{message}
+2018-03-30 14:47:11.976 UTC [container] lockContainer -> DEBU 487 waiting for container(dev-peer0.org1.example.com-mycc-1.0) lock
+2018-03-30 14:47:11.976 UTC [container] lockContainer -> DEBU 488 got container (dev-peer0.org1.example.com-mycc-1.0) lock
+2018-03-30 14:47:11.986 UTC [dockercontroller] Start -> DEBU 489 Cleanup container dev-peer0.org1.example.com-mycc-1.0
+2018-03-30 14:47:12.074 UTC [dockercontroller] stopInternal -> DEBU 48a Stop container dev-peer0.org1.example.com-mycc-1.0(No such container: dev-peer0.org1.example.com-mycc-1.0)
+2018-03-30 14:47:12.083 UTC [dockercontroller] stopInternal -> DEBU 48b Kill container dev-peer0.org1.example.com-mycc-1.0 (No such container: dev-peer0.org1.example.com-mycc-1.0)
+2018-03-30 14:47:12.092 UTC [dockercontroller] stopInternal -> DEBU 48c Remove container dev-peer0.org1.example.com-mycc-1.0 (No such container: dev-peer0.org1.example.com-mycc-1.0)
+2018-03-30 14:47:12.092 UTC [dockercontroller] Start -> DEBU 48d Start container dev-peer0.org1.example.com-mycc-1.0
+2018-03-30 14:47:12.101 UTC [dockercontroller] getDockerHostConfig -> DEBU 48e docker container hostconfig NetworkMode: net_byfn
+2018-03-30 14:47:12.113 UTC [dockercontroller] createContainer -> DEBU 48f Create container: dev-peer0.org1.example.com-mycc-1.0
+2018-03-30 14:47:12.159 UTC [dockercontroller] Start -> DEBU 490 start-could not find image <dev-peer0.org1.example.com-mycc-1.0-384f11f484b9302df90b453200cfb25174305fce8f53f4e94d45ee3b6cab0ce9> (container id <dev-peer0.org1.example.com-mycc-1.0>), because of <no such image>...attempt to recreate image
+2018-03-30 14:47:12.205 UTC [chaincode-platform] generateDockerfile -> DEBU 491 
+FROM hyperledger/fabric-baseos:x86_64-0.3.2
+ADD binpackage.tar /usr/local/bin
+LABEL org.hyperledger.fabric.chaincode.id.name="mycc" \
+      org.hyperledger.fabric.chaincode.id.version="1.0" \
+      org.hyperledger.fabric.chaincode.type="GOLANG" \
+      org.hyperledger.fabric.version="1.0.6" \
+      org.hyperledger.fabric.base.version="0.3.2"
+ENV CORE_CHAINCODE_BUILDLEVEL=1.0.6
+2018-03-30 14:47:12.313 UTC [util] DockerBuild -> DEBU 492 Attempting build with image hyperledger/fabric-ccenv:x86_64-1.0.6
+2018-03-30 14:47:50.324 UTC [dockercontroller] deployImage -> DEBU 493 Created image: dev-peer0.org1.example.com-mycc-1.0-384f11f484b9302df90b453200cfb25174305fce8f53f4e94d45ee3b6cab0ce9
+2018-03-30 14:47:50.324 UTC [dockercontroller] Start -> DEBU 494 start-recreated image successfully
+2018-03-30 14:47:50.324 UTC [dockercontroller] createContainer -> DEBU 495 Create container: dev-peer0.org1.example.com-mycc-1.0
+2018-03-30 14:47:50.473 UTC [dockercontroller] createContainer -> DEBU 496 Created container: dev-peer0.org1.example.com-mycc-1.0-384f11f484b9302df90b453200cfb25174305fce8f53f4e94d45ee3b6cab0ce9
+2018-03-30 14:47:51.313 UTC [dockercontroller] Start -> DEBU 498 Started container dev-peer0.org1.example.com-mycc-1.0
+2018-03-30 14:47:51.313 UTC [container] unlockContainer -> DEBU 499 container lock deleted(dev-peer0.org1.example.com-mycc-1.0)
+2018-03-30 14:47:51.313 UTC [chaincode] HandleChaincodeStream -> DEBU 497 Current context deadline = 0001-01-01 00:00:00 +0000 UTC, ok = false
+2018-03-30 14:47:51.321 UTC [chaincode] processStream -> DEBU 49a []Received message REGISTER from shim
+2018-03-30 14:47:51.322 UTC [chaincode] HandleMessage -> DEBU 49b []Fabric side Handling ChaincodeMessage of type: REGISTER in state created
+2018-03-30 14:47:51.323 UTC [chaincode] beforeRegisterEvent -> DEBU 49c Received REGISTER in state created
+2018-03-30 14:47:51.324 UTC [chaincode] registerHandler -> DEBU 49d registered handler complete for chaincode mycc:1.0
+2018-03-30 14:47:51.324 UTC [chaincode] beforeRegisterEvent -> DEBU 49e Got REGISTER for chaincodeID = name:"mycc:1.0" , sending back REGISTERED
+2018-03-30 14:47:51.327 UTC [chaincode] notifyDuringStartup -> DEBU 49f Notifying during startup
+2018-03-30 14:47:51.330 UTC [chaincode] func1 -> DEBU 4a0 chaincode mycc:1.0 launch seq completed
+2018-03-30 14:47:51.330 UTC [chaincode] ready -> DEBU 4a1 sending READY
+2018-03-30 14:47:51.330 UTC [chaincode] setChaincodeProposal -> DEBU 4a2 Setting chaincode proposal context...
+2018-03-30 14:47:51.330 UTC [chaincode] setChaincodeProposal -> DEBU 4a3 Proposal different from nil. Creating chaincode proposal context...
+2018-03-30 14:47:51.330 UTC [chaincode] processStream -> DEBU 4a4 [04f0cde8]Move state message READY
+2018-03-30 14:47:51.330 UTC [chaincode] HandleMessage -> DEBU 4a5 [04f0cde8]Fabric side Handling ChaincodeMessage of type: READY in state established
+2018-03-30 14:47:51.330 UTC [chaincode] enterReadyState -> DEBU 4a6 [04f0cde8]Entered state ready
+2018-03-30 14:47:51.330 UTC [chaincode] notify -> DEBU 4a7 notifying Txid:04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f
+2018-03-30 14:47:51.331 UTC [chaincode] processStream -> DEBU 4a8 [04f0cde8]sending state message READY
+2018-03-30 14:47:51.331 UTC [chaincode] Launch -> DEBU 4a9 sending init completed
+2018-03-30 14:47:51.335 UTC [chaincode] Launch -> DEBU 4aa LaunchChaincode complete
+2018-03-30 14:47:51.335 UTC [chaincode] Execute -> DEBU 4ab Entry
+2018-03-30 14:47:51.335 UTC [chaincode] Execute -> DEBU 4ac chaincode canonical name: mycc:1.0
+2018-03-30 14:47:51.335 UTC [chaincode] sendExecuteMessage -> DEBU 4ad [04f0cde8]Inside sendExecuteMessage. Message INIT
+2018-03-30 14:47:51.335 UTC [chaincode] setChaincodeProposal -> DEBU 4ae Setting chaincode proposal context...
+2018-03-30 14:47:51.336 UTC [chaincode] setChaincodeProposal -> DEBU 4af Proposal different from nil. Creating chaincode proposal context...
+2018-03-30 14:47:51.336 UTC [chaincode] sendExecuteMessage -> DEBU 4b0 [04f0cde8]sendExecuteMsg trigger event INIT
+2018-03-30 14:47:51.336 UTC [chaincode] processStream -> DEBU 4b1 [04f0cde8]Move state message INIT
+2018-03-30 14:47:51.336 UTC [chaincode] HandleMessage -> DEBU 4b2 [04f0cde8]Fabric side Handling ChaincodeMessage of type: INIT in state ready
+2018-03-30 14:47:51.336 UTC [chaincode] filterError -> DEBU 4b3 Ignoring NoTransitionError: no transition
+2018-03-30 14:47:51.336 UTC [chaincode] processStream -> DEBU 4b4 [04f0cde8]sending state message INIT
+2018-03-30 14:47:51.350 UTC [chaincode] processStream -> DEBU 4b5 [04f0cde8]Received message PUT_STATE from shim
+2018-03-30 14:47:51.351 UTC [chaincode] HandleMessage -> DEBU 4b6 [04f0cde8]Fabric side Handling ChaincodeMessage of type: PUT_STATE in state ready
+2018-03-30 14:47:51.351 UTC [chaincode] filterError -> DEBU 4b7 Ignoring NoTransitionError: no transition
+2018-03-30 14:47:51.351 UTC [chaincode] func1 -> DEBU 4b8 [04f0cde8]state is ready
+2018-03-30 14:47:51.351 UTC [chaincode] func1 -> DEBU 4b9 [04f0cde8]Completed PUT_STATE. Sending RESPONSE
+2018-03-30 14:47:51.351 UTC [chaincode] 1 -> DEBU 4ba [04f0cde8]enterBusyState trigger event RESPONSE
+2018-03-30 14:47:51.351 UTC [chaincode] processStream -> DEBU 4bb [04f0cde8]Move state message RESPONSE
+2018-03-30 14:47:51.351 UTC [chaincode] HandleMessage -> DEBU 4bc [04f0cde8]Fabric side Handling ChaincodeMessage of type: RESPONSE in state ready
+2018-03-30 14:47:51.351 UTC [chaincode] filterError -> DEBU 4bd Ignoring NoTransitionError: no transition
+2018-03-30 14:47:51.351 UTC [chaincode] processStream -> DEBU 4be [04f0cde8]sending state message RESPONSE
+2018-03-30 14:47:51.352 UTC [chaincode] processStream -> DEBU 4bf [04f0cde8]Received message PUT_STATE from shim
+2018-03-30 14:47:51.352 UTC [chaincode] HandleMessage -> DEBU 4c0 [04f0cde8]Fabric side Handling ChaincodeMessage of type: PUT_STATE in state ready
+2018-03-30 14:47:51.352 UTC [chaincode] filterError -> DEBU 4c1 Ignoring NoTransitionError: no transition
+2018-03-30 14:47:51.353 UTC [chaincode] func1 -> DEBU 4c2 [04f0cde8]state is ready
+2018-03-30 14:47:51.353 UTC [chaincode] func1 -> DEBU 4c3 [04f0cde8]Completed PUT_STATE. Sending RESPONSE
+2018-03-30 14:47:51.353 UTC [chaincode] 1 -> DEBU 4c4 [04f0cde8]enterBusyState trigger event RESPONSE
+2018-03-30 14:47:51.353 UTC [chaincode] processStream -> DEBU 4c5 [04f0cde8]Move state message RESPONSE
+2018-03-30 14:47:51.353 UTC [chaincode] HandleMessage -> DEBU 4c6 [04f0cde8]Fabric side Handling ChaincodeMessage of type: RESPONSE in state ready
+2018-03-30 14:47:51.353 UTC [chaincode] filterError -> DEBU 4c7 Ignoring NoTransitionError: no transition
+2018-03-30 14:47:51.353 UTC [chaincode] processStream -> DEBU 4c8 [04f0cde8]sending state message RESPONSE
+2018-03-30 14:47:51.360 UTC [chaincode] processStream -> DEBU 4c9 [04f0cde8]Received message COMPLETED from shim
+2018-03-30 14:47:51.360 UTC [chaincode] HandleMessage -> DEBU 4ca [04f0cde8]Fabric side Handling ChaincodeMessage of type: COMPLETED in state ready
+2018-03-30 14:47:51.360 UTC [chaincode] HandleMessage -> DEBU 4cb [04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f]HandleMessage- COMPLETED. Notify
+2018-03-30 14:47:51.360 UTC [chaincode] notify -> DEBU 4cc notifying Txid:04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f
+2018-03-30 14:47:51.361 UTC [chaincode] Execute -> DEBU 4cd Exit
+2018-03-30 14:47:51.361 UTC [endorser] callChaincode -> DEBU 4ce Exit
+2018-03-30 14:47:51.361 UTC [lockbasedtxmgr] GetTxSimulationResults -> DEBU 4cf Simulation completed, getting simulation results
+2018-03-30 14:47:51.361 UTC [lockbasedtxmgr] Done -> DEBU 4d0 Done with transaction simulation / query execution [5b60c35f-ebff-4344-a49f-62df8758eb5f]
+2018-03-30 14:47:51.366 UTC [endorser] simulateProposal -> DEBU 4d1 Exit
+2018-03-30 14:47:51.367 UTC [endorser] endorseProposal -> DEBU 4d2 Entry - txid: 04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f channel id: mychannel chaincode id: name:"lscc" 
+2018-03-30 14:47:51.367 UTC [endorser] endorseProposal -> DEBU 4d3 info: escc for chaincode id name:"lscc"  is escc
+2018-03-30 14:47:51.370 UTC [endorser] callChaincode -> DEBU 4d4 Entry - txid: 04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f channel id: mychannel version: 1.0.6
+2018-03-30 14:47:51.371 UTC [ccprovider] NewCCContext -> DEBU 4d5 NewCCCC (chain=mychannel,chaincode=escc,version=1.0.6,txid=04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f,syscc=true,proposal=0xc42231a410,canname=escc:1.0.6
+2018-03-30 14:47:51.373 UTC [chaincode] Launch -> DEBU 4d6 chaincode is running(no need to launch) : escc:1.0.6
+2018-03-30 14:47:51.374 UTC [chaincode] Execute -> DEBU 4d7 Entry
+2018-03-30 14:47:51.374 UTC [chaincode] Execute -> DEBU 4d8 chaincode canonical name: escc:1.0.6
+2018-03-30 14:47:51.374 UTC [chaincode] sendExecuteMessage -> DEBU 4d9 [04f0cde8]Inside sendExecuteMessage. Message TRANSACTION
+2018-03-30 14:47:51.374 UTC [chaincode] setChaincodeProposal -> DEBU 4da Setting chaincode proposal context...
+2018-03-30 14:47:51.374 UTC [chaincode] setChaincodeProposal -> DEBU 4db Proposal different from nil. Creating chaincode proposal context...
+2018-03-30 14:47:51.375 UTC [chaincode] sendExecuteMessage -> DEBU 4dc [04f0cde8]sendExecuteMsg trigger event TRANSACTION
+2018-03-30 14:47:51.375 UTC [chaincode] processStream -> DEBU 4dd [04f0cde8]Move state message TRANSACTION
+2018-03-30 14:47:51.375 UTC [chaincode] HandleMessage -> DEBU 4de [04f0cde8]Fabric side Handling ChaincodeMessage of type: TRANSACTION in state ready
+2018-03-30 14:47:51.375 UTC [chaincode] filterError -> DEBU 4df Ignoring NoTransitionError: no transition
+2018-03-30 14:47:51.375 UTC [chaincode] processStream -> DEBU 4e0 [04f0cde8]sending state message TRANSACTION
+2018-03-30 14:47:51.375 UTC [shim] func1 -> DEBU 4e1 [04f0cde8]Received message TRANSACTION from shim
+2018-03-30 14:47:51.375 UTC [shim] handleMessage -> DEBU 4e2 [04f0cde8]Handling ChaincodeMessage of type: TRANSACTION(state:ready)
+2018-03-30 14:47:51.375 UTC [shim] beforeTransaction -> DEBU 4e3 [04f0cde8]Received TRANSACTION, invoking transaction on chaincode(Src:ready, Dst:ready)
+2018-03-30 14:47:51.376 UTC [escc] Invoke -> DEBU 4e4 ESCC starts: 8 args
+2018-03-30 14:47:51.378 UTC [escc] Invoke -> DEBU 4e5 ESCC exits successfully
+2018-03-30 14:47:51.378 UTC [shim] func1 -> DEBU 4e6 [04f0cde8]Transaction completed. Sending COMPLETED
+2018-03-30 14:47:51.379 UTC [shim] func1 -> DEBU 4e7 [04f0cde8]Move state message COMPLETED
+2018-03-30 14:47:51.379 UTC [shim] handleMessage -> DEBU 4e8 [04f0cde8]Handling ChaincodeMessage of type: COMPLETED(state:ready)
+2018-03-30 14:47:51.379 UTC [shim] func1 -> DEBU 4e9 [04f0cde8]send state message COMPLETED
+2018-03-30 14:47:51.379 UTC [chaincode] processStream -> DEBU 4ea [04f0cde8]Received message COMPLETED from shim
+2018-03-30 14:47:51.379 UTC [chaincode] HandleMessage -> DEBU 4eb [04f0cde8]Fabric side Handling ChaincodeMessage of type: COMPLETED in state ready
+2018-03-30 14:47:51.379 UTC [chaincode] HandleMessage -> DEBU 4ec [04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f]HandleMessage- COMPLETED. Notify
+2018-03-30 14:47:51.379 UTC [chaincode] notify -> DEBU 4ed notifying Txid:04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f
+2018-03-30 14:47:51.379 UTC [chaincode] Execute -> DEBU 4ee Exit
+2018-03-30 14:47:51.379 UTC [endorser] callChaincode -> DEBU 4ef Exit
+2018-03-30 14:47:51.379 UTC [endorser] endorseProposal -> DEBU 4f0 Exit
+2018-03-30 14:47:51.379 UTC [lockbasedtxmgr] Done -> DEBU 4f1 Done with transaction simulation / query execution [5b60c35f-ebff-4344-a49f-62df8758eb5f]
+2018-03-30 14:47:51.379 UTC [endorser] ProcessProposal -> DEBU 4f2 Exit
+2018-03-30 14:47:53.516 UTC [committer] Commit -> DEBU 4f3 Validating block
+2018-03-30 14:47:53.523 UTC [txvalidator] Validate -> DEBU 4f4 START Block Validation
+2018-03-30 14:47:53.524 UTC [txvalidator] Validate -> DEBU 4f5 Validating transaction peer.ValidateTransaction()
+2018-03-30 14:47:53.526 UTC [protoutils] ValidateTransaction -> DEBU 4f6 ValidateTransactionEnvelope starts for envelope 0xc42292e240
+2018-03-30 14:47:53.527 UTC [protoutils] ValidateTransaction -> DEBU 4f7 Header is channel_header:"\010\003\032\014\010\333\233\371\325\005\020\301\335\246\255\003\"\tmychannel*@04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f:\010\022\006\022\004lscc" signature_header:"\n\214\006\n\007Org1MSP\022\200\006-----BEGIN -----\nMIICGTCCAb+gAwIBAgIQDDtFi0XFvIVonZ5WtSXUPTAKBggqhkjOPQQDAjBzMQsw\nCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy\nYW5jaXNjbzEZMBcGA1UEChMQb3JnMS5leGFtcGxlLmNvbTEcMBoGA1UEAxMTY2Eu\nb3JnMS5leGFtcGxlLmNvbTAeFw0xODAzMzAxNDM2MTdaFw0yODAzMjcxNDM2MTda\nMFsxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1T\nYW4gRnJhbmNpc2NvMR8wHQYDVQQDDBZBZG1pbkBvcmcxLmV4YW1wbGUuY29tMFkw\nEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAESuWp3rxyIH0XHKdWBh7V2N/rdrX2f6Zf\nLjlgg074LRwHUQjVghqafPxdH4p09UVZHchiPtklxWNNzYmxF4jGqqNNMEswDgYD\nVR0PAQH/BAQDAgeAMAwGA1UdEwEB/wQCMAAwKwYDVR0jBCQwIoAgwXct3xZ4SFGQ\nBxOUhJ/IZz7w6GWhKVWRmNTEQMyCvGowCgYIKoZIzj0EAwIDSAAwRQIhALXRSUUx\nCYNNbWa38gutSRvUASg/rA2W1OtTU7ZKcKmYAiAleUBsIDQuEq38ByHMgZhcatmn\n6NU7/plhb6GxzbTD4w==\n-----END -----\n\022\030%8\330\337\333\0168\317\370Vl6w\350\230\r\275&1\316\225\264\222>" 
+2018-03-30 14:47:53.527 UTC [protoutils] validateChannelHeader -> DEBU 4f8 validateChannelHeader info: header type 3
+2018-03-30 14:47:53.527 UTC [protoutils] checkSignatureFromCreator -> DEBU 4f9 checkSignatureFromCreator starts
+2018-03-30 14:47:53.528 UTC [protoutils] checkSignatureFromCreator -> DEBU 4fa checkSignatureFromCreator info: creator is &{Org1MSP a941a65e3c841216c90a76c196570430a65ff28323cde9a0eaa9c31bc34a83e3}
+2018-03-30 14:47:53.530 UTC [protoutils] checkSignatureFromCreator -> DEBU 4fb checkSignatureFromCreator info: creator is valid
+2018-03-30 14:47:53.531 UTC [protoutils] checkSignatureFromCreator -> DEBU 4fc checkSignatureFromCreator exists successfully
+2018-03-30 14:47:53.573 UTC [protoutils] validateEndorserTransaction -> DEBU 4fd validateEndorserTransaction starts for data 0xc421549400, header channel_header:"\010\003\032\014\010\333\233\371\325\005\020\301\335\246\255\003\"\tmychannel*@04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f:\010\022\006\022\004lscc" signature_header:"\n\214\006\n\007Org1MSP\022\200\006-----BEGIN -----\nMIICGTCCAb+gAwIBAgIQDDtFi0XFvIVonZ5WtSXUPTAKBggqhkjOPQQDAjBzMQsw\nCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy\nYW5jaXNjbzEZMBcGA1UEChMQb3JnMS5leGFtcGxlLmNvbTEcMBoGA1UEAxMTY2Eu\nb3JnMS5leGFtcGxlLmNvbTAeFw0xODAzMzAxNDM2MTdaFw0yODAzMjcxNDM2MTda\nMFsxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1T\nYW4gRnJhbmNpc2NvMR8wHQYDVQQDDBZBZG1pbkBvcmcxLmV4YW1wbGUuY29tMFkw\nEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAESuWp3rxyIH0XHKdWBh7V2N/rdrX2f6Zf\nLjlgg074LRwHUQjVghqafPxdH4p09UVZHchiPtklxWNNzYmxF4jGqqNNMEswDgYD\nVR0PAQH/BAQDAgeAMAwGA1UdEwEB/wQCMAAwKwYDVR0jBCQwIoAgwXct3xZ4SFGQ\nBxOUhJ/IZz7w6GWhKVWRmNTEQMyCvGowCgYIKoZIzj0EAwIDSAAwRQIhALXRSUUx\nCYNNbWa38gutSRvUASg/rA2W1OtTU7ZKcKmYAiAleUBsIDQuEq38ByHMgZhcatmn\n6NU7/plhb6GxzbTD4w==\n-----END -----\n\022\030%8\330\337\333\0168\317\370Vl6w\350\230\r\275&1\316\225\264\222>" 
+2018-03-30 14:47:53.573 UTC [protoutils] validateEndorserTransaction -> DEBU 4fe validateEndorserTransaction info: there are 1 actions
+2018-03-30 14:47:53.586 UTC [protoutils] validateEndorserTransaction -> DEBU 4ff validateEndorserTransaction info: signature header is valid
+2018-03-30 14:47:53.586 UTC [protoutils] ValidateTransaction -> DEBU 500 ValidateTransactionEnvelope returns err %!s(<nil>)
+2018-03-30 14:47:53.586 UTC [txvalidator] Validate -> DEBU 501 Transaction is for chain mychannel
+2018-03-30 14:47:53.586 UTC [fsblkstorage] retrieveTransactionByID -> DEBU 502 retrieveTransactionByID() - txId = [04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f]
+2018-03-30 14:47:53.587 UTC [txvalidator] Validate -> DEBU 503 Validating transaction vscc tx validate
+2018-03-30 14:47:53.593 UTC [lockbasedtxmgr] NewTxSimulator -> DEBU 504 constructing new tx simulator
+2018-03-30 14:47:53.593 UTC [lockbasedtxmgr] newLockBasedTxSimulator -> DEBU 505 constructing new tx simulator [8ff002de-f5f7-4a44-a48c-5c21094fd2a4]
+2018-03-30 14:47:53.593 UTC [ccprovider] NewCCContext -> DEBU 506 NewCCCC (chain=mychannel,chaincode=vscc,version=1.0.6,txid=f9bb4907-f746-4f45-a279-aacc3e4a91de,syscc=true,proposal=0x0,canname=vscc:1.0.6
+2018-03-30 14:47:53.593 UTC [txvalidator] VSCCValidateTxForCC -> DEBU 507 Invoking VSCC txid 04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f chaindID mychannel
+2018-03-30 14:47:53.593 UTC [chaincode] Launch -> DEBU 508 chaincode is running(no need to launch) : vscc:1.0.6
+2018-03-30 14:47:53.593 UTC [chaincode] Execute -> DEBU 509 Entry
+2018-03-30 14:47:53.593 UTC [chaincode] Execute -> DEBU 50a chaincode canonical name: vscc:1.0.6
+2018-03-30 14:47:53.593 UTC [chaincode] sendExecuteMessage -> DEBU 50b [f9bb4907]Inside sendExecuteMessage. Message TRANSACTION
+2018-03-30 14:47:53.593 UTC [chaincode] setChaincodeProposal -> DEBU 50c Setting chaincode proposal context...
+2018-03-30 14:47:53.593 UTC [chaincode] sendExecuteMessage -> DEBU 50d [f9bb4907]sendExecuteMsg trigger event TRANSACTION
+2018-03-30 14:47:53.593 UTC [chaincode] processStream -> DEBU 50e [f9bb4907]Move state message TRANSACTION
+2018-03-30 14:47:53.593 UTC [chaincode] HandleMessage -> DEBU 50f [f9bb4907]Fabric side Handling ChaincodeMessage of type: TRANSACTION in state ready
+2018-03-30 14:47:53.593 UTC [chaincode] filterError -> DEBU 510 Ignoring NoTransitionError: no transition
+2018-03-30 14:47:53.593 UTC [chaincode] processStream -> DEBU 511 [f9bb4907]sending state message TRANSACTION
+2018-03-30 14:47:53.594 UTC [shim] func1 -> DEBU 512 [f9bb4907]Received message TRANSACTION from shim
+2018-03-30 14:47:53.594 UTC [shim] handleMessage -> DEBU 513 [f9bb4907]Handling ChaincodeMessage of type: TRANSACTION(state:ready)
+2018-03-30 14:47:53.594 UTC [shim] beforeTransaction -> DEBU 514 [f9bb4907]Received TRANSACTION, invoking transaction on chaincode(Src:ready, Dst:ready)
+2018-03-30 14:47:53.600 UTC [vscc] Invoke -> DEBU 515 VSCC invoked
+2018-03-30 14:47:53.600 UTC [vscc] deduplicateIdentity -> DEBU 516 Signature set is of size 1 out of 1 endorsement(s)
+2018-03-30 14:47:53.603 UTC [vscc] Invoke -> DEBU 517 VSCC info: doing special validation for LSCC
+2018-03-30 14:47:53.603 UTC [vscc] ValidateLSCCInvocation -> DEBU 518 VSCC info: ValidateLSCCInvocation acting on deploy [][]uint8{[]uint8{0x6d, 0x79, 0x63, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c}, []uint8{0xa, 0x27, 0x8, 0x1, 0x12, 0xb, 0x12, 0x4, 0x6d, 0x79, 0x63, 0x63, 0x1a, 0x3, 0x31, 0x2e, 0x30, 0x1a, 0x16, 0xa, 0x4, 0x69, 0x6e, 0x69, 0x74, 0xa, 0x1, 0x61, 0xa, 0x3, 0x31, 0x30, 0x30, 0xa, 0x1, 0x62, 0xa, 0x3, 0x32, 0x30, 0x30}, []uint8{0x12, 0xc, 0x12, 0xa, 0x8, 0x1, 0x12, 0x2, 0x8, 0x0, 0x12, 0x2, 0x8, 0x1, 0x1a, 0xb, 0x12, 0x9, 0xa, 0x7, 0x4f, 0x72, 0x67, 0x31, 0x4d, 0x53, 0x50, 0x1a, 0xb, 0x12, 0x9, 0xa, 0x7, 0x4f, 0x72, 0x67, 0x32, 0x4d, 0x53, 0x50}, []uint8{0x65, 0x73, 0x63, 0x63}, []uint8{0x76, 0x73, 0x63, 0x63}}
+2018-03-30 14:47:53.603 UTC [vscc] ValidateLSCCInvocation -> DEBU 519 VSCC info: validating invocation of lscc function deploy on arguments [][]uint8{[]uint8{0x6d, 0x79, 0x63, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c}, []uint8{0xa, 0x27, 0x8, 0x1, 0x12, 0xb, 0x12, 0x4, 0x6d, 0x79, 0x63, 0x63, 0x1a, 0x3, 0x31, 0x2e, 0x30, 0x1a, 0x16, 0xa, 0x4, 0x69, 0x6e, 0x69, 0x74, 0xa, 0x1, 0x61, 0xa, 0x3, 0x31, 0x30, 0x30, 0xa, 0x1, 0x62, 0xa, 0x3, 0x32, 0x30, 0x30}, []uint8{0x12, 0xc, 0x12, 0xa, 0x8, 0x1, 0x12, 0x2, 0x8, 0x0, 0x12, 0x2, 0x8, 0x1, 0x1a, 0xb, 0x12, 0x9, 0xa, 0x7, 0x4f, 0x72, 0x67, 0x31, 0x4d, 0x53, 0x50, 0x1a, 0xb, 0x12, 0x9, 0xa, 0x7, 0x4f, 0x72, 0x67, 0x32, 0x4d, 0x53, 0x50}, []uint8{0x65, 0x73, 0x63, 0x63}, []uint8{0x76, 0x73, 0x63, 0x63}}
+2018-03-30 14:47:53.603 UTC [vscc] ValidateLSCCInvocation -> DEBU 51a Namespace lscc
+2018-03-30 14:47:53.603 UTC [lockbasedtxmgr] newQueryExecutor -> DEBU 51b constructing new query executor [2e4177aa-d19e-49f6-951a-ed1815c8f2eb]
+2018-03-30 14:47:53.603 UTC [stateleveldb] GetState -> DEBU 51c GetState(). ns=lscc, key=mycc
+2018-03-30 14:47:53.603 UTC [lockbasedtxmgr] Done -> DEBU 51d Done with transaction simulation / query execution [2e4177aa-d19e-49f6-951a-ed1815c8f2eb]
+2018-03-30 14:47:53.603 UTC [vscc] ValidateLSCCInvocation -> DEBU 51e Validating deploy for cc mycc version 1.0
+2018-03-30 14:47:53.603 UTC [vscc] checkInstantiationPolicy -> DEBU 51f VSCC info: checkInstantiationPolicy starts, policy is &cauthdsl.policy{evaluator:(func([]*common.SignedData, []bool) bool)(0x659d50)}
+2018-03-30 14:47:53.604 UTC [vscc] Invoke -> DEBU 520 VSCC exists successfully
+2018-03-30 14:47:53.605 UTC [shim] func1 -> DEBU 521 [f9bb4907]Transaction completed. Sending COMPLETED
+2018-03-30 14:47:53.605 UTC [shim] func1 -> DEBU 522 [f9bb4907]Move state message COMPLETED
+2018-03-30 14:47:53.605 UTC [shim] handleMessage -> DEBU 523 [f9bb4907]Handling ChaincodeMessage of type: COMPLETED(state:ready)
+2018-03-30 14:47:53.605 UTC [shim] func1 -> DEBU 524 [f9bb4907]send state message COMPLETED
+2018-03-30 14:47:53.605 UTC [chaincode] processStream -> DEBU 525 [f9bb4907]Received message COMPLETED from shim
+2018-03-30 14:47:53.605 UTC [chaincode] HandleMessage -> DEBU 526 [f9bb4907]Fabric side Handling ChaincodeMessage of type: COMPLETED in state ready
+2018-03-30 14:47:53.605 UTC [chaincode] HandleMessage -> DEBU 527 [f9bb4907-f746-4f45-a279-aacc3e4a91de]HandleMessage- COMPLETED. Notify
+2018-03-30 14:47:53.605 UTC [chaincode] notify -> DEBU 528 notifying Txid:f9bb4907-f746-4f45-a279-aacc3e4a91de
+2018-03-30 14:47:53.605 UTC [chaincode] Execute -> DEBU 529 Exit
+2018-03-30 14:47:53.605 UTC [lockbasedtxmgr] Done -> DEBU 52a Done with transaction simulation / query execution [8ff002de-f5f7-4a44-a48c-5c21094fd2a4]
+2018-03-30 14:47:53.606 UTC [txvalidator] Validate -> DEBU 52b END Block Validation
+2018-03-30 14:47:53.606 UTC [lockbasedtxmgr] ValidateAndPrepare -> DEBU 52c Validating new block with num trans = [1]
+2018-03-30 14:47:53.606 UTC [statevalidator] ValidateAndPrepareBatch -> DEBU 52d New block arrived for validation:&common.Block{Header:(*common.BlockHeader)(0xc42290bc80), Data:(*common.BlockData)(0xc42292d580), Metadata:(*common.BlockMetadata)(0xc42292d5c0)}, doMVCCValidation=true
+2018-03-30 14:47:53.606 UTC [statevalidator] ValidateAndPrepareBatch -> DEBU 52e Validating a block with [1] transactions
+2018-03-30 14:47:53.606 UTC [stateleveldb] GetState -> DEBU 52f GetState(). ns=lscc, key=mycc
+2018-03-30 14:47:53.606 UTC [statevalidator] ValidateAndPrepareBatch -> DEBU 530 Block [3] Transaction index [0] TxId [04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f] marked as valid by state validator
+2018-03-30 14:47:53.652 UTC [fsblkstorage] indexBlock -> DEBU 531 Indexing block [blockNum=3, blockHash=[]byte{0x56, 0x0, 0x2, 0x49, 0x56, 0x30, 0x4c, 0xb1, 0xf3, 0xe2, 0xf3, 0xd9, 0x9f, 0xa7, 0x4b, 0x4c, 0x2b, 0xc6, 0x87, 0x10, 0xb9, 0x7b, 0x71, 0xf7, 0xee, 0xaa, 0xc8, 0x9e, 0xe9, 0x1f, 0x4d, 0xd2} txOffsets=
+txId=04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f locPointer=offset=70, bytesLength=3375
+]
+2018-03-30 14:47:53.653 UTC [fsblkstorage] indexBlock -> DEBU 532 Adding txLoc [fileSuffixNum=0, offset=39491, bytesLength=3375] for tx ID: [04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f] to index
+2018-03-30 14:47:53.653 UTC [fsblkstorage] indexBlock -> DEBU 533 Adding txLoc [fileSuffixNum=0, offset=39491, bytesLength=3375] for tx number:[0] ID: [04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f] to blockNumTranNum index
+2018-03-30 14:47:53.746 UTC [fsblkstorage] updateCheckpoint -> DEBU 534 Broadcasting about update checkpointInfo: latestFileChunkSuffixNum=[0], latestFileChunksize=[44626], isChainEmpty=[false], lastBlockNumber=[3]
+2018-03-30 14:47:53.747 UTC [kvledger] Commit -> INFO 535 Channel [mychannel]: Created block [3] with 1 transaction(s)
+2018-03-30 14:47:53.747 UTC [lockbasedtxmgr] Commit -> DEBU 536 Committing updates to state database
+2018-03-30 14:47:53.748 UTC [lockbasedtxmgr] Commit -> DEBU 537 Write lock acquired for committing updates to state database
+2018-03-30 14:47:53.750 UTC [stateleveldb] ApplyUpdates -> DEBU 538 Channel [mychannel]: Applying key=[[]byte{0x6c, 0x73, 0x63, 0x63, 0x0, 0x6d, 0x79, 0x63, 0x63}]
+2018-03-30 14:47:53.750 UTC [stateleveldb] ApplyUpdates -> DEBU 539 Channel [mychannel]: Applying key=[[]byte{0x6d, 0x79, 0x63, 0x63, 0x0, 0x61}]
+2018-03-30 14:47:53.750 UTC [stateleveldb] ApplyUpdates -> DEBU 53a Channel [mychannel]: Applying key=[[]byte{0x6d, 0x79, 0x63, 0x63, 0x0, 0x62}]
+2018-03-30 14:47:53.765 UTC [lockbasedtxmgr] Commit -> DEBU 53b Updates committed to state database
+2018-03-30 14:47:53.789 UTC [historyleveldb] Commit -> DEBU 53c Channel [mychannel]: Updating history database for blockNo [3] with [1] transactions
+2018-03-30 14:47:53.874 UTC [historyleveldb] Commit -> DEBU 53d Channel [mychannel]: Updates committed to history database for blockNo [3]
+2018-03-30 14:47:53.874 UTC [eventhub_producer] SendProducerBlockEvent -> DEBU 53e Entry
+2018-03-30 14:47:53.875 UTC [eventhub_producer] SendProducerBlockEvent -> DEBU 53f Channel [mychannel]: Block event for block number [3] contains transaction id: 04f0cde86e5e11bb2e0b075ad482b69ce1cceffbcb241a69b2de2f113f85f79f
+2018-03-30 14:47:53.882 UTC [eventhub_producer] SendProducerBlockEvent -> INFO 540 Channel [mychannel]: Sending event for block number [3]
+2018-03-30 14:47:53.885 UTC [eventhub_producer] Send -> DEBU 541 Entry
+2018-03-30 14:47:53.897 UTC [eventhub_producer] Send -> DEBU 542 Event processor timeout > 0
+2018-03-30 14:47:53.898 UTC [eventhub_producer] Send -> DEBU 543 Event sent successfully
+2018-03-30 14:47:53.898 UTC [eventhub_producer] Send -> DEBU 544 Exit
+2018-03-30 14:47:53.898 UTC [eventhub_producer] SendProducerBlockEvent -> DEBU 545 Exit
+
+
+
+CONTAINER ID        IMAGE                                                                                                  COMMAND                  CREATED             STATUS                      PORTS                                              NAMES
+6ec1834f7276        dev-peer0.org1.example.com-mycc-1.0-384f11f484b9302df90b453200cfb25174305fce8f53f4e94d45ee3b6cab0ce9   "chaincode -peer.add…"   8 minutes ago       Up 8 minutes                                                                   dev-peer0.org1.example.com-mycc-1.0
+

@@ -1,0 +1,82 @@
+2018-04-07 15:06:07.275 UTC [blocksProvider] DeliverBlocks -> DEBU 454 [mychannel] Adding payload locally, buffer seqNum = [4], peers number [3]
+2018-04-07 15:06:07.278 UTC [blocksProvider] DeliverBlocks -> DEBU 455 [mychannel] Gossiping block [4], peers number [3]
+2018-04-07 15:06:07.286 UTC [committer] Commit -> DEBU 456 Validating block
+2018-04-07 15:06:07.286 UTC [txvalidator] Validate -> DEBU 457 START Block Validation
+2018-04-07 15:06:07.286 UTC [txvalidator] Validate -> DEBU 458 Validating transaction peer.ValidateTransaction()
+2018-04-07 15:06:07.286 UTC [protoutils] ValidateTransaction -> DEBU 459 ValidateTransactionEnvelope starts for envelope 0xc4215eca50
+2018-04-07 15:06:07.286 UTC [protoutils] ValidateTransaction -> DEBU 45a Header is channel_header:"\010\003\032\014\010\274\274\243\326\005\020\300\354\370\202\002\"\tmychannel*@a69dbd56f1de4b06708282df6c29402fcb21ef37a9349b53c50862358ad5c624:\010\022\006\022\004mycc" signature_header:"\n\214\006\n\007Org1MSP\022\200\006-----BEGIN -----\nMIICGTCCAb+gAwIBAgIQJ1MWFYMOA4wM037z4WM1QDAKBggqhkjOPQQDAjBzMQsw\nCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy\nYW5jaXNjbzEZMBcGA1UEChMQb3JnMS5leGFtcGxlLmNvbTEcMBoGA1UEAxMTY2Eu\nb3JnMS5leGFtcGxlLmNvbTAeFw0xODA0MDcxNDQ3MjdaFw0yODA0MDQxNDQ3Mjda\nMFsxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1T\nYW4gRnJhbmNpc2NvMR8wHQYDVQQDDBZBZG1pbkBvcmcxLmV4YW1wbGUuY29tMFkw\nEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE+fABWHFi4MVlfi+l6aY8sW5hSX5ehEb+\nr5xbvYiZotBeCOutOWwj3xTbMBBRyxjeaJfOqZyh0Blbsfdi8qH1QKNNMEswDgYD\nVR0PAQH/BAQDAgeAMAwGA1UdEwEB/wQCMAAwKwYDVR0jBCQwIoAgMPnMtOzne478\n+/06GyzvomThtZqno+l6sxkWMVvjBmwwCgYIKoZIzj0EAwIDSAAwRQIhAKr2mKN3\n/pXuk5nGyBDRCbIsuQoZJNdXb14IxtKIXsoKAiBpc/MuayYycJkfRAQdLtPEilZE\n5y19zmewkVardfqUug==\n-----END -----\n\022\030\244\234\307$\242\342_\013\037\375\255\217\236\330\"\235>s\321\315\225\016\216=" 
+2018-04-07 15:06:07.287 UTC [protoutils] validateChannelHeader -> DEBU 45b validateChannelHeader info: header type 3
+2018-04-07 15:06:07.287 UTC [protoutils] checkSignatureFromCreator -> DEBU 45c checkSignatureFromCreator starts
+2018-04-07 15:06:07.287 UTC [protoutils] checkSignatureFromCreator -> DEBU 45d checkSignatureFromCreator info: creator is &{Org1MSP 9f88e7c6a031df7c0be7797cfaddfc5569f43e0dd4881bc4166d92f0a9023f00}
+2018-04-07 15:06:07.287 UTC [protoutils] checkSignatureFromCreator -> DEBU 45e checkSignatureFromCreator info: creator is valid
+2018-04-07 15:06:07.288 UTC [protoutils] checkSignatureFromCreator -> DEBU 45f checkSignatureFromCreator exists successfully
+2018-04-07 15:06:07.288 UTC [protoutils] validateEndorserTransaction -> DEBU 460 validateEndorserTransaction starts for data 0xc421b30800, header channel_header:"\010\003\032\014\010\274\274\243\326\005\020\300\354\370\202\002\"\tmychannel*@a69dbd56f1de4b06708282df6c29402fcb21ef37a9349b53c50862358ad5c624:\010\022\006\022\004mycc" signature_header:"\n\214\006\n\007Org1MSP\022\200\006-----BEGIN -----\nMIICGTCCAb+gAwIBAgIQJ1MWFYMOA4wM037z4WM1QDAKBggqhkjOPQQDAjBzMQsw\nCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy\nYW5jaXNjbzEZMBcGA1UEChMQb3JnMS5leGFtcGxlLmNvbTEcMBoGA1UEAxMTY2Eu\nb3JnMS5leGFtcGxlLmNvbTAeFw0xODA0MDcxNDQ3MjdaFw0yODA0MDQxNDQ3Mjda\nMFsxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1T\nYW4gRnJhbmNpc2NvMR8wHQYDVQQDDBZBZG1pbkBvcmcxLmV4YW1wbGUuY29tMFkw\nEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE+fABWHFi4MVlfi+l6aY8sW5hSX5ehEb+\nr5xbvYiZotBeCOutOWwj3xTbMBBRyxjeaJfOqZyh0Blbsfdi8qH1QKNNMEswDgYD\nVR0PAQH/BAQDAgeAMAwGA1UdEwEB/wQCMAAwKwYDVR0jBCQwIoAgMPnMtOzne478\n+/06GyzvomThtZqno+l6sxkWMVvjBmwwCgYIKoZIzj0EAwIDSAAwRQIhAKr2mKN3\n/pXuk5nGyBDRCbIsuQoZJNdXb14IxtKIXsoKAiBpc/MuayYycJkfRAQdLtPEilZE\n5y19zmewkVardfqUug==\n-----END -----\n\022\030\244\234\307$\242\342_\013\037\375\255\217\236\330\"\235>s\321\315\225\016\216=" 
+2018-04-07 15:06:07.288 UTC [protoutils] validateEndorserTransaction -> DEBU 461 validateEndorserTransaction info: there are 1 actions
+2018-04-07 15:06:07.288 UTC [protoutils] validateEndorserTransaction -> DEBU 462 validateEndorserTransaction info: signature header is valid
+2018-04-07 15:06:07.288 UTC [protoutils] ValidateTransaction -> DEBU 463 ValidateTransactionEnvelope returns err %!s(<nil>)
+2018-04-07 15:06:07.288 UTC [txvalidator] Validate -> DEBU 464 Transaction is for chain mychannel
+2018-04-07 15:06:07.288 UTC [fsblkstorage] retrieveTransactionByID -> DEBU 465 retrieveTransactionByID() - txId = [a69dbd56f1de4b06708282df6c29402fcb21ef37a9349b53c50862358ad5c624]
+2018-04-07 15:06:07.289 UTC [txvalidator] Validate -> DEBU 466 Validating transaction vscc tx validate
+2018-04-07 15:06:07.289 UTC [lockbasedtxmgr] newQueryExecutor -> DEBU 467 constructing new query executor [65de1fe4-6365-4e33-ab32-b0521d89f283]
+2018-04-07 15:06:07.289 UTC [stateleveldb] GetState -> DEBU 468 GetState(). ns=lscc, key=mycc
+2018-04-07 15:06:07.307 UTC [lockbasedtxmgr] Done -> DEBU 469 Done with transaction simulation / query execution [65de1fe4-6365-4e33-ab32-b0521d89f283]
+2018-04-07 15:06:07.308 UTC [lockbasedtxmgr] NewTxSimulator -> DEBU 46a constructing new tx simulator
+2018-04-07 15:06:07.308 UTC [lockbasedtxmgr] newLockBasedTxSimulator -> DEBU 46b constructing new tx simulator [983b419c-d782-44a3-9b09-9677c0664277]
+2018-04-07 15:06:07.309 UTC [ccprovider] NewCCContext -> DEBU 46c NewCCCC (chain=mychannel,chaincode=vscc,version=1.0.6,txid=66b4c650-f36f-4030-aa5a-e1c5b4af907e,syscc=true,proposal=0x0,canname=vscc:1.0.6
+2018-04-07 15:06:07.309 UTC [txvalidator] VSCCValidateTxForCC -> DEBU 46d Invoking VSCC txid a69dbd56f1de4b06708282df6c29402fcb21ef37a9349b53c50862358ad5c624 chaindID mychannel
+2018-04-07 15:06:07.310 UTC [chaincode] Launch -> DEBU 46e chaincode is running(no need to launch) : vscc:1.0.6
+2018-04-07 15:06:07.310 UTC [chaincode] Execute -> DEBU 46f Entry
+2018-04-07 15:06:07.311 UTC [chaincode] Execute -> DEBU 470 chaincode canonical name: vscc:1.0.6
+2018-04-07 15:06:07.312 UTC [chaincode] sendExecuteMessage -> DEBU 471 [66b4c650]Inside sendExecuteMessage. Message TRANSACTION
+2018-04-07 15:06:07.316 UTC [chaincode] setChaincodeProposal -> DEBU 472 Setting chaincode proposal context...
+2018-04-07 15:06:07.316 UTC [chaincode] sendExecuteMessage -> DEBU 473 [66b4c650]sendExecuteMsg trigger event TRANSACTION
+2018-04-07 15:06:07.316 UTC [chaincode] processStream -> DEBU 474 [66b4c650]Move state message TRANSACTION
+2018-04-07 15:06:07.316 UTC [chaincode] HandleMessage -> DEBU 475 [66b4c650]Fabric side Handling ChaincodeMessage of type: TRANSACTION in state ready
+2018-04-07 15:06:07.316 UTC [chaincode] filterError -> DEBU 476 Ignoring NoTransitionError: no transition
+2018-04-07 15:06:07.316 UTC [chaincode] processStream -> DEBU 477 [66b4c650]sending state message TRANSACTION
+2018-04-07 15:06:07.317 UTC [shim] func1 -> DEBU 478 [66b4c650]Received message TRANSACTION from shim
+2018-04-07 15:06:07.317 UTC [shim] handleMessage -> DEBU 479 [66b4c650]Handling ChaincodeMessage of type: TRANSACTION(state:ready)
+2018-04-07 15:06:07.317 UTC [shim] beforeTransaction -> DEBU 47a [66b4c650]Received TRANSACTION, invoking transaction on chaincode(Src:ready, Dst:ready)
+2018-04-07 15:06:07.318 UTC [vscc] Invoke -> DEBU 47b VSCC invoked
+2018-04-07 15:06:07.319 UTC [vscc] deduplicateIdentity -> DEBU 47c Signature set is of size 1 out of 1 endorsement(s)
+2018-04-07 15:06:07.320 UTC [vscc] Invoke -> DEBU 47d VSCC exists successfully
+2018-04-07 15:06:07.320 UTC [shim] func1 -> DEBU 47e [66b4c650]Transaction completed. Sending COMPLETED
+2018-04-07 15:06:07.320 UTC [shim] func1 -> DEBU 47f [66b4c650]Move state message COMPLETED
+2018-04-07 15:06:07.322 UTC [shim] handleMessage -> DEBU 480 [66b4c650]Handling ChaincodeMessage of type: COMPLETED(state:ready)
+2018-04-07 15:06:07.322 UTC [shim] func1 -> DEBU 481 [66b4c650]send state message COMPLETED
+2018-04-07 15:06:07.322 UTC [chaincode] processStream -> DEBU 482 [66b4c650]Received message COMPLETED from shim
+2018-04-07 15:06:07.322 UTC [chaincode] HandleMessage -> DEBU 483 [66b4c650]Fabric side Handling ChaincodeMessage of type: COMPLETED in state ready
+2018-04-07 15:06:07.322 UTC [chaincode] HandleMessage -> DEBU 484 [66b4c650-f36f-4030-aa5a-e1c5b4af907e]HandleMessage- COMPLETED. Notify
+2018-04-07 15:06:07.322 UTC [chaincode] notify -> DEBU 485 notifying Txid:66b4c650-f36f-4030-aa5a-e1c5b4af907e
+2018-04-07 15:06:07.323 UTC [chaincode] Execute -> DEBU 486 Exit
+2018-04-07 15:06:07.323 UTC [lockbasedtxmgr] Done -> DEBU 487 Done with transaction simulation / query execution [983b419c-d782-44a3-9b09-9677c0664277]
+2018-04-07 15:06:07.326 UTC [txvalidator] Validate -> DEBU 488 END Block Validation
+2018-04-07 15:06:07.326 UTC [lockbasedtxmgr] ValidateAndPrepare -> DEBU 489 Validating new block with num trans = [1]
+2018-04-07 15:06:07.326 UTC [statevalidator] ValidateAndPrepareBatch -> DEBU 48a New block arrived for validation:&common.Block{Header:(*common.BlockHeader)(0xc421b36980), Data:(*common.BlockData)(0xc4216dc140), Metadata:(*common.BlockMetadata)(0xc4216dc180)}, doMVCCValidation=true
+2018-04-07 15:06:07.326 UTC [statevalidator] ValidateAndPrepareBatch -> DEBU 48b Validating a block with [1] transactions
+2018-04-07 15:06:07.326 UTC [stateleveldb] GetState -> DEBU 48c GetState(). ns=lscc, key=mycc
+2018-04-07 15:06:07.327 UTC [stateleveldb] GetState -> DEBU 48d GetState(). ns=mycc, key=a
+2018-04-07 15:06:07.327 UTC [stateleveldb] GetState -> DEBU 48e GetState(). ns=mycc, key=b
+2018-04-07 15:06:07.327 UTC [statevalidator] ValidateAndPrepareBatch -> DEBU 48f Block [4] Transaction index [0] TxId [a69dbd56f1de4b06708282df6c29402fcb21ef37a9349b53c50862358ad5c624] marked as valid by state validator
+2018-04-07 15:06:07.347 UTC [fsblkstorage] indexBlock -> DEBU 490 Indexing block [blockNum=4, blockHash=[]byte{0x67, 0xaa, 0xa2, 0x89, 0x41, 0xc6, 0x2e, 0xeb, 0x9f, 0xc4, 0x8b, 0xb5, 0xf4, 0x0, 0x26, 0xbd, 0x68, 0x1e, 0x7d, 0x42, 0xba, 0xa8, 0x50, 0xfc, 0xe6, 0x3b, 0x66, 0xcc, 0xcb, 0xd, 0xf0, 0xa7} txOffsets=
+txId=a69dbd56f1de4b06708282df6c29402fcb21ef37a9349b53c50862358ad5c624 locPointer=offset=70, bytesLength=2843
+]
+2018-04-07 15:06:07.347 UTC [fsblkstorage] indexBlock -> DEBU 491 Adding txLoc [fileSuffixNum=0, offset=44672, bytesLength=2843] for tx ID: [a69dbd56f1de4b06708282df6c29402fcb21ef37a9349b53c50862358ad5c624] to index
+2018-04-07 15:06:07.347 UTC [fsblkstorage] indexBlock -> DEBU 492 Adding txLoc [fileSuffixNum=0, offset=44672, bytesLength=2843] for tx number:[0] ID: [a69dbd56f1de4b06708282df6c29402fcb21ef37a9349b53c50862358ad5c624] to blockNumTranNum index
+2018-04-07 15:06:07.355 UTC [fsblkstorage] updateCheckpoint -> DEBU 493 Broadcasting about update checkpointInfo: latestFileChunkSuffixNum=[0], latestFileChunksize=[49265], isChainEmpty=[false], lastBlockNumber=[4]
+2018-04-07 15:06:07.356 UTC [kvledger] Commit -> INFO 494 Channel [mychannel]: Created block [4] with 1 transaction(s)
+2018-04-07 15:06:07.356 UTC [lockbasedtxmgr] Commit -> DEBU 495 Committing updates to state database
+2018-04-07 15:06:07.356 UTC [lockbasedtxmgr] Commit -> DEBU 496 Write lock acquired for committing updates to state database
+2018-04-07 15:06:07.357 UTC [stateleveldb] ApplyUpdates -> DEBU 497 Channel [mychannel]: Applying key=[[]byte{0x6d, 0x79, 0x63, 0x63, 0x0, 0x61}]
+2018-04-07 15:06:07.358 UTC [stateleveldb] ApplyUpdates -> DEBU 498 Channel [mychannel]: Applying key=[[]byte{0x6d, 0x79, 0x63, 0x63, 0x0, 0x62}]
+2018-04-07 15:06:07.363 UTC [lockbasedtxmgr] Commit -> DEBU 499 Updates committed to state database
+2018-04-07 15:06:07.364 UTC [historyleveldb] Commit -> DEBU 49a Channel [mychannel]: Updating history database for blockNo [4] with [1] transactions
+2018-04-07 15:06:07.371 UTC [historyleveldb] Commit -> DEBU 49b Channel [mychannel]: Updates committed to history database for blockNo [4]
+2018-04-07 15:06:07.372 UTC [eventhub_producer] SendProducerBlockEvent -> DEBU 49c Entry
+2018-04-07 15:06:07.372 UTC [eventhub_producer] SendProducerBlockEvent -> DEBU 49d Channel [mychannel]: Block event for block number [4] contains transaction id: a69dbd56f1de4b06708282df6c29402fcb21ef37a9349b53c50862358ad5c624
+2018-04-07 15:06:07.372 UTC [eventhub_producer] SendProducerBlockEvent -> INFO 49e Channel [mychannel]: Sending event for block number [4]
+2018-04-07 15:06:07.372 UTC [eventhub_producer] Send -> DEBU 49f Entry
+2018-04-07 15:06:07.372 UTC [eventhub_producer] Send -> DEBU 4a0 Event processor timeout > 0
+2018-04-07 15:06:07.372 UTC [eventhub_producer] Send -> DEBU 4a1 Event sent successfully
+2018-04-07 15:06:07.372 UTC [eventhub_producer] Send -> DEBU 4a2 Exit
+2018-04-07 15:06:07.372 UTC [eventhub_producer] SendProducerBlockEvent -> DEBU 4a3 Exit
