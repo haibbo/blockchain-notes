@@ -49,6 +49,11 @@ cd fabric-samples/first-network
 - [安装chaincode](install_chaincode.md)
 
 - [实例化chaincode](instantiate_chaincode.md)
+	- [实例化链码 - 客户端](instantiate_application.md)
+	- [实例化链码 - 生命周期系统链码(LSCC)](instantiate_cc_lscc.md)
+	- [系统链码与用户链码](instantiate_what_is_chaincode.md)
+	- [实例化链码 - 链码状态机](instantiate_cc_sm.md)
+	- [实例化链码 - 交易模拟器与读写集](txsim_and_rwset.md)
 
 - [chaincode 查询](query_chaincode.md)
 
