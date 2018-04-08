@@ -30,20 +30,31 @@ cd fabric-samples/first-network
 上面这条命令就可以启动了这个fabric的网络, 并执行了一些操作, 下面是脚本背后具体的操作.
 
 - 生成[证书信息(MSP)](generate_certs.md)
+
 - 生成 channel artifacts 
   - [创世区块](genesis_block.md)
   - [channel的配置交易](config_tx.md)
   - [锚节点更新](anchor_tx.md)
+
 - [启动docker](docker_start.md)
     - [Orderer启动之参数传递](orderer_start_paramaters.md)
+
 - [创建channel](create_channel.md)
+
 - [Peer 节点加入通道](Join_channel.md)
     - [配置管理系统链码](CSCC.md)
+
 - [更新通道锚节点信息](updateAnchorPeers.md)
+
 - [安装chaincode](install_chaincode.md)
+
 - [实例化chaincode](instantiate_chaincode.md)
+
+- [chaincode 查询](query_chaincode.md)
+
 - chaincode 调用
-- chaincode 查询
+
+    ​
 
 
 
