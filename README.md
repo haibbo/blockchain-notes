@@ -11,9 +11,7 @@
 
 [构建你的第一个fabric网络](http://hyperledger-fabric.readthedocs.io/en/latest/build_network.html)
 
-
 ### 下载BYFN代码
-
 BYFN是包含在fabric-samples的first-network目录下的，先通过git下载源代码：
 ```shell
 git clone https://github.com/hyperledger/fabric-samples.git
@@ -28,40 +26,34 @@ cd fabric-samples/first-network
 ```
 
 上面这条命令就可以启动了这个fabric的网络, 并执行了一些操作, 下面是脚本背后具体的操作.
-
 - 生成[证书信息(MSP)](generate_certs.md)
-
 - 生成 channel artifacts 
   - [创世区块](genesis_block.md)
   - [channel的配置交易](config_tx.md)
   - [锚节点更新](anchor_tx.md)
-
 - [启动docker](docker_start.md)
     - [Orderer启动之参数传递](orderer_start_paramaters.md)
-
 - [创建channel](create_channel.md)
-
 - [Peer 节点加入通道](Join_channel.md)
     - [配置管理系统链码](CSCC.md)
-
 - [更新通道锚节点信息](updateAnchorPeers.md)
-
 - [安装chaincode](install_chaincode.md)
-
 - [实例化chaincode](instantiate_chaincode.md)
 	- [实例化链码 - 客户端](instantiate_application.md)
 	- [实例化链码 - 生命周期系统链码(LSCC)](instantiate_cc_lscc.md)
 	- [系统链码与用户链码](instantiate_what_is_chaincode.md)
 	- [实例化链码 - 链码状态机](instantiate_cc_sm.md)
 	- [实例化链码 - 交易模拟器与读写集](txsim_and_rwset.md)
-
 - [chaincode 查询](query_chaincode.md)
-
 - [交易流程(chaincode 调用)](invoke_chaincode.md)
-	- [交易流程 - 客户端)](txflow_application.md)
-	- [交易流程 - 背书节点)](txflow_endorser.md)
+	- [交易流程 - 客户端](txflow_application.md)
+	- [交易流程 - 背书节点](txflow_endorser.md)
+	- [交易流程 - 背书节点与链码容器](txflow_endorser_cc_container.md)
 	- [交易流程 - 用户链码example02](txflow_chaincode_example02.md)
-
+	- [交易流程 - 排序节点]
+	- [交易流程 - 提交节点]
+	- [交易流程 - 提交节点之VSCC]
+	- [交易流程 - 提交节点之MVCC]
 
 
 

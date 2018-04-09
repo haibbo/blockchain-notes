@@ -96,5 +96,5 @@ func (e *Endorser) simulateProposal(ctx context.Context, chainID string, txid st
 
 #### callChaincode
 
- 具体可参考实例化部分,和LOG.  代码分析省去.
+ 参考下节
 
