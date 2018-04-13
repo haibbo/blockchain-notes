@@ -96,14 +96,17 @@ func (index *blockIndex) indexBlock(blockIdxInfo *blockIdxInfo) error {
 	for idx, txoffset := range txOffsets {
 		batch.Put(constructTxValidationCodeIDKey(txoffset.txID), []byte{byte(txsfltr.Flag(idx))})
 	}
+    // 索引检查点
+    batch.Put(indexCheckpointKey, encodeBlockNum(blockIdxInfo.blockNum))
 }
 ```
 
 #####  Dump
 
 ```shell
-/c/f/f/peer0.org1.example.com_production git:release ❯❯❯ level-dump .//ledgersData/chains/index
+/c/f/f/peer0.production git:release ❯❯❯ level-dump .//ledgersData/chains/index
 ................
+{ key: 'mychannel\u0000indexCheckpointKey', value: '\u0004' }
 { key: 'mychannel\u0000t07179411973a0741bc8c2e9d712e00dcf667e4b5e669c8344a31a785e5759e27',
   value: '\u0000��\u0002�\u0016' }
 { key: 'mychannel\u0000tb657116f94bff5b0303af22698d72b445fdc81e49f89552588d89aa5a272027a',
@@ -147,6 +150,7 @@ func (historyDB *historyDB) Commit(block *common.Block) error {
 			}
 		}
 	}
+
 }
 //代码在core/ledger/kvledger/history/historydb/historyleveldb/historyleveldb.go
 func ConstructCompositeHistoryKey(ns string, key string, blocknum uint64, trannum uint64) []byte {
