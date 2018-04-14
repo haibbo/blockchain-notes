@@ -52,7 +52,7 @@ type TxSimulator interface {
 
 #### 逻辑示意图:
 
-![mage-20180406223021](/var/folders/n6/4628kw492bg6xyg7b098h9380000gn/T/abnerworks.Typora/image-201804062230213.png)
+![TxSimulator](_images/tx_simulator.png)
 
 - 每次链码调用的时候生成一个交易模拟器TxSimulator
 
@@ -68,6 +68,4 @@ type TxSimulator interface {
 
 基于Golang 的上下文, 根据交易ID找到交易模拟器.
 
-
-
-![mage-20180406223004](/var/folders/n6/4628kw492bg6xyg7b098h9380000gn/T/abnerworks.Typora/image-201804062230046.png)
+![TxSimulator](_images/tx_simulator_data.png)
