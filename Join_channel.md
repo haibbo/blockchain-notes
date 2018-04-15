@@ -8,13 +8,25 @@
 peer channel join -b mychannel.block
 ```
 
-请求的类型 HeaderType_CONFIG, 客户端首先创建一个ChaincodeSpec结构，其input中的Args第一个参数是CSCC.JoinChain（指定调用配置链码的操作），第二个参数为所加入通道的初始区块, 如下图
+请求的类型 HeaderType_CONFIG, 
+
+- 客户端首先创建一个ChaincodeSpec结构
+
+
+- 其input中的Args第一个参数是CSCC.JoinChain（指定调用配置链码的操作），
+- 第二个参数为所加入通道的初始区块
+
+如下图:
 
 ![](_images/chanincode_proposalpayload.png)
 
-利用ChaincodeSpec,构造ChaincodeInvocationSpec, 然后创建Proposal接管, 最后客户端通过gRPC(/protos.Endorser/ProcessProposa)把这个Proposal签名后发送给peer节点.
+利用ChaincodeSpec,构造ChaincodeInvocationSpec, 然后创建Proposal, 最后客户端通过gRPC(/protos.Endorser/ProcessProposal)把这个Proposal签名后发送给peer节点.
 
+**客户端和背书节点,只有ProcessProposal这一个接口**
 
+### Peer节点处理流程
+
+![](_images/join_channel.png)
 
 ### Peer 接收Proposal
 
@@ -23,41 +35,41 @@ peer channel join -b mychannel.block
 ```go
 block, err := utils.GetBlockFromBlockBytes(args[1])
 func (e *PeerConfiger) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
-	//args[0]为JoinChain或GetChannels
-	args := stub.GetArgs()
-	fname := string(args[0]) //Invoke function
-	sp, err := stub.GetSignedProposal() //获取SignedProposal
+    //args[0]为JoinChain或GetChannels
+    args := stub.GetArgs()
+    fname := string(args[0]) //Invoke function
+    sp, err := stub.GetSignedProposal() //获取SignedProposal
 
-	switch fname {
-	case JoinChain: //加入通道
-		//从args[1]里获取创世区块, 
-		block, err := utils.GetBlockFromBlockBytes(args[1])
+    switch fname {
+    case JoinChain: //加入通道
+        //从args[1]里获取创世区块, 
+        block, err := utils.GetBlockFromBlockBytes(args[1])
         // 获取chainID
-		cid, err := utils.GetChainIDFromBlock(block)
+        cid, err := utils.GetChainIDFromBlock(block)
         // 验证区块内容
-		err := validateConfigBlock(block)
+        err := validateConfigBlock(block)
         // 检查本地的 MSP Admins 策略
-		err = e.policyChecker.CheckPolicyNoChannel(mgmt.Admins, sp)
+        err = e.policyChecker.CheckPolicyNoChannel(mgmt.Admins, sp)
         // 加入Chain
-		return joinChain(cid, block)
-	............
-	}
+        return joinChain(cid, block)
+    ............
+    }
 }
 //代码在core/scc/cscc/configure.go
-
 ```
-
-
 
 ### 合法性和权限检查
 
 由下面两个函数完成
 
 ```go
-    // 验证区块内容
-	err := validateConfigBlock(block) //代码在core/scc/cscc/configure.go
-    // 检查本地的 MSP Admins 策略
-	err = e.policyChecker.CheckPolicyNoChannel(mgmt.Admins, sp)//代码在core/policy/policy.go
+// 验证区块内容
+err := validateConfigBlock(block) 
+//代码在core/scc/cscc/configure.go
+
+// 检查本地的 MSP Admins 策略
+err = e.policyChecker.CheckPolicyNoChannel(mgmt.Admins, sp)
+//代码在core/policy/policy.go
 
 ```
 
@@ -71,19 +83,17 @@ func (e *PeerConfiger) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 
 2）是否满足加入通道请求的策略：提交加入通道请求是需要有管理员权限的.
 
-
-
 ### 加入Chain
 
 ```go
 func joinChain(chainID string, block *common.Block) pb.Response {
     //建mychannel的链（账本）和gossip服务
-	err := peer.CreateChainFromBlock(block)
+    err := peer.CreateChainFromBlock(block)
     //初始化Chain
-	peer.InitChain(chainID)
+    peer.InitChain(chainID)
     // 发送创建区块的event
-	err := producer.SendProducerBlockEvent(block)
-	return shim.Success(nil)
+    err := producer.SendProducerBlockEvent(block)
+    return shim.Success(nil)
 }
 //代码在core/scc/cscc/configure.go
 ```
@@ -97,10 +107,12 @@ func CreateChainFromBlock(cb *common.Block) error {
     var l ledger.PeerLedger
     // 根据区块创建属于mychannel的账本
     l, err = ledgermgmt.CreateLedger(cb)
-	// 创建新的Chain, 初始化Gossip服务, 并与Orderer连接.
+    // 创建新的Chain, 初始化Gossip服务, Leader选举,必要时与Orderer连接.
     return createChain(cid, l, cb)
 }
 ```
+
+InitChain会调用DeploySysCCs, deploy 给定的系统链码列表.代码在core/scc/importsysccs.go. 每个channel都有自己的系统链码.配置文件中可以指定安装哪些系统chaincode.
 
 ### 返回结果
 
