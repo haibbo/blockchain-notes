@@ -8,22 +8,35 @@
 peer chaincode install -n mycc -v 1.0 -p github.com/hyperledger/fabric/examples/chaincode/go/chaincode_example02
 ```
 
-对应的log是:
-
-```
-2018-03-30 22:44:08.122 CST [chaincodeCmd] checkChaincodeCmdParams -> INFO 001 Using default escc
-2018-03-30 22:44:08.122 CST [chaincodeCmd] checkChaincodeCmdParams -> INFO 002 Using default vscc
-2018-03-30 22:44:13.680 CST [main] main -> INFO 003 Exiting.....
-
-```
-
 客户端构建一个Signed Proposal, PayLoad如下:
 
 ![](_images/sp_install_cc.png)
 
-ChaincodeSpec结构中, Type为ChaincodeSpec_GOLANG, ChaincodeId.Name为“lscc”, Inpu 为“install” + ChaincodeDeploymentSpec. 通过gRPC发送给Peer的ProcessProposal.
+ChaincodeSpec结构中:
 
+- Type为ChaincodeSpec_GOLANG
 
+- ChaincodeId.Name为“lscc”, 
+
+- Inpu 为“install” + ChaincodeDeploymentSpec. 
+
+通过gRPC发送给Peer的ProcessProposal, 安装只和Peer有交互.
+
+ChaincodeDeploymentSpec结构:
+
+```go
+type ChaincodeDeploymentSpec struct {    
+    // 链码描述规范    
+    ChaincodeSpec *ChaincodeSpec    
+    // 控制链码可用事件，预留字段    
+    EffectiveDate *google_protobuf1.Timestamp    
+    // 打包好的链码代码    
+    CodePackage   []byte    
+    // 运行环境, 当前只支持系统进程和Docker    
+    ExecEnv       ChaincodeDeploymentSpec_ExecutionEnvironment
+}
+//代码在protos/peer/chaincode.pb.go
+```
 
 ### Peer LSCC(生命周期管理系统链码)
 
@@ -62,17 +75,5 @@ executeInstall:
 - 链码保存到了 ls /var/hyperledger/production/chaincodes/mycc.1.0
 - ChaincodeDeploymentSpec 结构
 
-```go
-type ChaincodeDeploymentSpec struct {    
-    // 链码描述规范    
-    ChaincodeSpec *ChaincodeSpec    
-    // 控制链码可用事件，预留字段    
-    EffectiveDate *google_protobuf1.Timestamp    
-    // 打包好的链码代码    
-    CodePackage   []byte    
-    // 运行环境, 当前只支持系统进程和Docker    
-    ExecEnv       ChaincodeDeploymentSpec_ExecutionEnvironment
-}
-//代码在protos/peer/chaincode.pb.go
-```
+
 

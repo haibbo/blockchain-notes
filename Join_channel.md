@@ -2,19 +2,20 @@
 
 ### 客户端发起请求
 
-应用程序通过SDK或者命令行给节点发送包含通道创世区块的JoinChain请求，在BYFN使用的命令如下:
+在BYFN使用的命令如下:
 
 ```shell
 peer channel join -b mychannel.block
 ```
 
-请求的类型 HeaderType_CONFIG, 
+- 请求的类型 HeaderType_CONFIG, 
+
 
 - 客户端首先创建一个ChaincodeSpec结构
 
 
 - 其input中的Args第一个参数是CSCC.JoinChain（指定调用配置链码的操作），
-- 第二个参数为所加入通道的初始区块
+- 第二个参数为所加入通道的初始区块(创建通道时, 从orderer获取的)
 
 如下图:
 
@@ -89,7 +90,7 @@ err = e.policyChecker.CheckPolicyNoChannel(mgmt.Admins, sp)
 func joinChain(chainID string, block *common.Block) pb.Response {
     //建mychannel的链（账本）和gossip服务
     err := peer.CreateChainFromBlock(block)
-    //初始化Chain
+    // InitChain会调用DeploySysCCs, deploy 给定的系统链码列表.代码在core/scc/importsysccs.go. 每个channel都有自己的系统链码.配置文件中可以指定安装哪些系统chaincode.
     peer.InitChain(chainID)
     // 发送创建区块的event
     err := producer.SendProducerBlockEvent(block)
@@ -112,7 +113,24 @@ func CreateChainFromBlock(cb *common.Block) error {
 }
 ```
 
-InitChain会调用DeploySysCCs, deploy 给定的系统链码列表.代码在core/scc/importsysccs.go. 每个channel都有自己的系统链码.配置文件中可以指定安装哪些系统chaincode.
+createChain会在这个peer里, 为这个通道创建一个struct chain:
+
+```go
+type chain struct {
+	cs        *chainSupport
+	cb        *common.Block //应该是config block
+	committer committer.Committer // 
+}
+type chainSupport struct {
+	configtxapi.Manager // 查询或更新config
+    config.Application   // 保存了Application的config: anchor节点, 组织名等
+	ledger ledger.PeerLedger //对账本的操作接口
+}
+
+```
+
+
+
 
 ### 返回结果
 
