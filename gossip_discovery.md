@@ -26,7 +26,7 @@ type gossipDiscoveryImpl struct {
 	port             int
 	logger           *logging.Logger
 	disclosurePolicy DisclosurePolicy
-	pubsub           *util.PubSub
+	pubsub           *util.PubSub // PubSub Struct 完成世界的订阅和分发
 }
 // 代码在gossip/discovery/discovery_impl.go
 ```
@@ -39,7 +39,7 @@ type gossipDiscoveryImpl struct {
 
 ```go
 	d.validateSelfConfig()
-	d.msgStore = newAliveMsgStore(d)
+	d.msgStore = newAliveMsgStore(d) // MsgStore 参考下面对它的介绍
 
 	go d.periodicalSendAlive()
 	go d.periodicalCheckAlive()
@@ -176,3 +176,178 @@ if memResp := m.GetMemRes(); memResp != nil {
 	}
 ```
 
+### 模块PubSub
+
+订阅是异步通讯的一种方式, 接收方（receiver）会来订阅发送方（sender）的消息，发送方会把相关的消息或数据放到接收方所订阅的队列中，而接收方会从队列中获取数据。
+
+```go
+// PubSub 可以被用来publish事件给多个订阅者和订阅事件
+type PubSub struct {
+	sync.RWMutex
+	subscriptions map[string]*Set
+}
+type Subscription interface {
+    // Listen 会阻塞,直到对应的事件发生(publish), 或是TTL到期
+	Listen() (interface{}, error)
+}
+
+type subscription struct {
+	top string
+	ttl time.Duration // 生成时间, 当时间到达后对应的subscription会被清除掉
+    c   chan interface{} // 接受事件的通道, 试用interface{}来接收任意的事件
+}
+
+```
+
+它支持的3个主要方法:
+
+```go
+// 等到超时或事件被Publish
+func (s *subscription) Listen() (interface{}, error) {
+	select {
+	case <-time.After(s.ttl):
+		return nil, errors.New("timed out")
+	case item := <-s.c:
+		return item, nil
+	}
+}
+// Public 事件给这个主题上所有的订阅者
+func (ps *PubSub) Publish(topic string, item interface{}) error {
+	s, subscribed := ps.subscriptions[topic]
+	for _, sub := range s.ToArray() {
+        // 获取这个topic上的所用订阅者, 依次把事件写给它们的channel.
+		c := sub.(*subscription).c
+		c <- item
+	}
+	return nil
+}
+// Subscribe 返回一个订阅者
+func (ps *PubSub) Subscribe(topic string, ttl time.Duration) Subscription {
+	sub := &subscription{
+		top: topic,
+		ttl: ttl,
+		c:   make(chan interface{}, subscriptionBuffSize),
+	}
+	s, exists := ps.subscriptions[topic]
+	// 如果针对这个topic没有对应的订阅集, 创建一个
+	if !exists {
+		s = NewSet()
+		ps.subscriptions[topic] = s
+	}
+	// 向某一个主题的订阅者集加入一个订阅者
+	s.Add(sub)
+	// 超时后执行unSubscribe, 取消订阅
+	time.AfterFunc(ttl, func() {
+		ps.unSubscribe(sub)
+	})
+	return sub
+}
+```
+
+在Discovery中, Publish使用在收到Membership Response后:
+
+```go
+d.pubsub.Publish(fmt.Sprintf("%d", m.Nonce), m.Nonce)
+```
+
+Subscribe和Listen用在发送完Membership Request,等待Response的函数sendUntilAcked中:
+
+```go
+func (d *gossipDiscoveryImpl) sendUntilAcked(peer *NetworkMember, message *proto.SignedGossipMessage) {
+	nonce := message.Nonce // 获取Nonce
+	for i := 0; i < maxConnectionAttempts && !d.toDie(); i++ {
+        // 订阅Topic为Nonce, TTL为5的事件
+		sub := d.pubsub.Subscribe(fmt.Sprintf("%d", nonce), time.Second*5)
+		d.comm.SendToPeer(peer, message)
+        // 开始监听直到收到或超时
+		if _, timeoutErr := sub.Listen(); timeoutErr == nil {
+			return
+		}
+		time.Sleep(getReconnectInterval())
+	}
+}
+```
+
+### 模块MsgStore
+
+MsgStore用于存储消息, 并且这里的消息是有有效期的. 并且提供了接口来根据一些规则更新里面的消息.
+
+```go
+func newAliveMsgStore(d *gossipDiscoveryImpl) *aliveMsgStore {
+    policy := proto.NewGossipMessageComparator(0) // 消息的替换规则参考(invalidationPolicy)
+	trigger := func(m interface{}) {} // 替换消息后执行的函数
+	aliveMsgTTL := getAliveExpirationTimeout() * msgExpirationFactor // 25 * 20 = 500s
+	externalLock := func() { d.lock.Lock() }
+	externalUnlock := func() { d.lock.Unlock() }
+	callback := func(m interface{}) { // 消息超时后执行的清除函数 
+		msg := m.(*proto.SignedGossipMessage)
+		if !msg.IsAliveMsg() {
+			return
+		}
+		id := msg.GetAliveMsg().Membership.PkiId
+        // 某个ID的AliveMessage过期后, 会删除关于它所以的信息.
+		d.aliveMembership.Remove(id)
+		d.deadMembership.Remove(id)
+		delete(d.id2Member, string(id))
+		delete(d.deadLastTS, string(id))
+		delete(d.aliveLastTS, string(id))
+	}
+
+	s := &aliveMsgStore{
+		MessageStore: msgstore.NewMessageStoreExpirable(policy, trigger, aliveMsgTTL, externalLock, externalUnlock, callback),
+	}
+	return s
+}
+```
+
+上面的pol 
+
+包含一个通用的消息验证策略函数：
+
+type MessageReplacingPolicy func(this interface{}, that interface{})InvalidationResult
+
+其中，this和that指代的是当前消息和原有消息的比较，并判断当前消息的有效性。比较的结果InvalidationResult有3种可能。
+
+1）MESSAGE_INVALIDATES：当前消息是有效的，原有消息是无效的，用当前消息替换原有消息；
+
+2）MESSAGE_INVALIDATED：当前消息是无效的，原有消息是有效的，丢弃当前的消息；
+
+3）MESSAGE_NO_ACTION：两个消息可能是不同类型的，两个消息不进行比较，两个消息都是有效的。MessageReplacingPolicy可以根据实际存储的消息定义不同的比较策略。
+
+```go
+// 根据包类型的不同有不一样的规则.
+func (mc *msgComparator) invalidationPolicy(this interface{}, that interface{}) common.InvalidationResult {
+	thisMsg := this.(*SignedGossipMessage)
+	thatMsg := that.(*SignedGossipMessage)
+
+	if thisMsg.IsAliveMsg() && thatMsg.IsAliveMsg() {
+		return aliveInvalidationPolicy(thisMsg.GetAliveMsg(), thatMsg.GetAliveMsg())
+	}
+
+	if thisMsg.IsDataMsg() && thatMsg.IsDataMsg() {
+		return mc.dataInvalidationPolicy(thisMsg.GetDataMsg(), thatMsg.GetDataMsg())
+	}
+
+	if thisMsg.IsStateInfoMsg() && thatMsg.IsStateInfoMsg() {
+		return mc.stateInvalidationPolicy(thisMsg.GetStateInfo(), thatMsg.GetStateInfo())
+	}
+
+	if thisMsg.IsIdentityMsg() && thatMsg.IsIdentityMsg() {
+		return mc.identityInvalidationPolicy(thisMsg.GetPeerIdentity(), thatMsg.GetPeerIdentity())
+	}
+
+	if thisMsg.IsLeadershipMsg() && thatMsg.IsLeadershipMsg() {
+		return leaderInvalidationPolicy(thisMsg.GetLeadershipMsg(), thatMsg.GetLeadershipMsg())
+	}
+
+	return common.MessageNoAction
+}
+```
+
+替换的规则基本上,包括
+
+1. 时间戳的比较
+2. 消息序列号的比较
+3. 节点PKI-ID的比较
+
+![](_images/msgstore_verify.png)
