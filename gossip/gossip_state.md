@@ -61,7 +61,7 @@ select {
 
 ### 处理DataMsg:
 
-当收到了区块匹配预期的下一个区块, 开始把连续的区块依次提交,广播.
+当收到了区块匹配预期的下一个区块, 开始把连续的区块依次提交, 广播.
 
 ```go
 func (s *GossipStateProviderImpl) deliverPayloads() {
@@ -74,11 +74,14 @@ func (s *GossipStateProviderImpl) deliverPayloads() {
 			for payload := s.payloads.Pop(); payload != nil; payload = s.payloads.Pop() {
 				rawBlock := &common.Block{}
 				pb.Unmarshal(payload.Data, rawBlock)
-				// commit 并且把这个block广播给其他节点
+				// 1, 调用commiter的commit进行本地提交
+                // 2, 以最新的block height来更新StateInfoMsg, 设置shouldGossipStateInfo, 之后StateInfoMsg会被散播出去发出去
 				s.commitBlock(rawBlock)
     }
 }
 ```
+
+
 
 ### 反熵
 
@@ -142,9 +145,7 @@ func (s *GossipStateProviderImpl) requestBlocksInRange(start uint64, end uint64)
 ### 处理State Request消息
 
 对请求的区块范围做合法性检测, 把本地又的区块依次取出, 放到Response并发送给请求者. 
-
 ```go
-
 func (s *GossipStateProviderImpl) handleStateRequest(msg proto.ReceivedMessage) {
 	request := msg.GetGossipMessage().GetStateRequest()
 
