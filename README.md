@@ -58,7 +58,23 @@ cd fabric-samples/first-network
     - [添加区块](txflow_addblock.md)
 
 
+### 共识算法
 
+[POW 工作量证明](consensus/POW.md)
 
+[Raft 一致性算法][consensus/Raft.md]
 
+[PBFT 实用拜占庭容错算法](consensus/PBFT.md)
+
+### Gossip 协议在Fabric中的实现
+
+[消息类型](gossip/gossip_message_type.md)
+
+[发现和成员管理](gossip/gossip_discovery.md)
+
+[主节点选举](gossip/gossip_election.md)
+
+[状态同步](gossip/gossip_state.md)
+
+[消息广播和分区](gossip/gossip_emmiter_batch.md)
 
