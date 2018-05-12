@@ -1,6 +1,6 @@
 ## 身份信息
 
-权限管理是fabric很重要的一个功能, 有权限管理就要有身份的区别, 这个是根据组织, 成员类型或具体某个成员来区分, 底层是通过证书.
+权限管理是Fabric很重要的一个功能, 有权限管理就要有身份的区别,   身份是根据组织, 成员类型或具体某个成员来区分, 底层是通过数字证书. MSP 数字证书是Fabric 网络实体的身份标识, 实体在通信和交易时使用证书进行签名和认证.
 
 ### 工具ctyptogen
 
@@ -59,7 +59,6 @@ msp | 这个目录会共享给ordder或peer节点, 之后详细介绍
 orderers或peers | 代表节点的配置
 tlsca | tls ca的证书和密钥
 user | 用户信息, 一定有一个管理员, 用户个数可指定
------------- | -------------
 
 下面看下具体peer节点下都有什么:
 ```
@@ -132,7 +131,7 @@ PeerOrgs:
     Users:
       Count: 1
 ```
-- Hostname.Domain 是这个节点的全称
+- Domain 是这个节点的全称
 - Template 直接节点的个数, 隐式的hostname是peer[0-max]
 - Users 指定普通用户个数, 管理员用户是默认存在的
 - 用户和 peer 没有对应关系
@@ -158,7 +157,7 @@ Certificate:
             X509v3 Key Usage: critical
                 **Digital Signature**
 ```
-- 签名为ECDSA, Hash算法为SHA256
+- 签名为ECDSA(不支持RSA和SM2), Hash算法为SHA256
 - ca.org1.example.com签发
 - 身份是User1@org1.example.com
 - Key Usage: Digital Signature
@@ -188,7 +187,19 @@ Certificate:
 ```
 
 ### 这些证书已经生成, 会如何使用呢?
-- 创世block
 - copy到peer特定的目录里
-- 客户端(SDK)需要用户证书, 去操作ledger
+  ```shell
+       - ../crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com /msp:/etc/hyperledger/fabric/msp
+       - ../crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com /tls:/etc/hyperledger/fabric/tls
+       # base/docker-compose-base.yaml中 把msp和tls 映射到peer0的特定目录里面
+  ```
+
+- 客户端(SDK)需要用户证书, 去操作fabric网络
+
+  ```shell
+  - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+  # docker-compose-cli.yaml cli.volumes中 映射了整个crypto-config目录创世block
+  ```
+
+- 创世block
 
