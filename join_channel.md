@@ -8,6 +8,7 @@
 peer channel join -b mychannel.block
 ```
 
+- 加入channel的请求是发往Peer的
 - 请求的类型 HeaderType_CONFIG, 
 
 
@@ -129,7 +130,12 @@ type chainSupport struct {
 
 ```
 
+Peer本地创建账本有两个操作:
 
+- 往本地链的数据库idStore添加记录
+- 把创世区块写到本地文件系统里
+
+因为Peer节点可以随时加入, 加入晚的可能会缺失很多区块, 通过Gossip向别的节点拉取区块.
 
 
 ### 返回结果

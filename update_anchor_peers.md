@@ -16,9 +16,9 @@ peer channel update -o orderer.example.com:7050 -c $CHANNEL_NAME -f ./channel-ar
 
 排序节点收到后会重新创建一个类型为HeadType_CONFIG的信封. 这部分可参考创建channel. 每个链都有一些Filter rules, 若检测到类型是HeadType_CONFIG, 会交给configManager来处理. 流程如下:
 
-![](/Users/haibbo/code/blockchain-notes/_images/configManagerUpdate.png)
+![](_images/configManagerUpdate.png)
 
-## PreApply
+## prepareApply
 
 ```go
 func (cm *configManager) prepareApply(configEnv *cb.ConfigEnvelope) (*configResult, error) {
