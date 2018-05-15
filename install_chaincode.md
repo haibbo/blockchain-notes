@@ -26,7 +26,7 @@ ChaincodeDeploymentSpec结构:
 
 ```go
 type ChaincodeDeploymentSpec struct {    
-    // 链码描述规范    
+    // 链码描述规范   保存要安装的链码的名字和版本信息 
     ChaincodeSpec *ChaincodeSpec    
     // 控制链码可用事件，预留字段    
     EffectiveDate *google_protobuf1.Timestamp    
@@ -73,7 +73,11 @@ executeInstall:
 - 名字 allowedCharsChaincodeName = "[A-Za-z0-9_-]+"
 - 版本 allowedCharsVersion       = "[A-Za-z0-9_.-]+"
 - 链码保存到了 ls /var/hyperledger/production/chaincodes/mycc.1.0
-- ChaincodeDeploymentSpec 结构
+- 保存的是 ChaincodeDeploymentSpec 结构
 
 
+### 总结
 
+1. 安装链码只是把链码对应的ChaincodeDeploymentSpec存到Peer的文件系统里, 和具体的链无关.
+2. 安装是针对节点的, 需要对每一个运行链码的背书节点都安装一遍.
+3. 没有安装链码的节点是不能执行这个链码的, 也就无法对其背书, 但是可以验证链上的交易并提交到本地账本中.
