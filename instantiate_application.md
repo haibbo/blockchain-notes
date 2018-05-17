@@ -5,18 +5,18 @@
 ```shell
 peer chaincode instantiate -o orderer.example.com:7050 -C mychannel -n mycc -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "OR ('Org1MSP.member','Org2MSP.member')"
 ```
-- 在指定通道对安装过的链码进行实例化, 链码在实例化之前是和通道无关的, 实例化的时候才绑定通道.
-- 需提供初始化参数, 节点上会创建容器, 并调用链码的Init方法进行初始化操作
-- 实例化链码需要同时和Orderer和Peer节点打交道
-- 执行实例化的用户,必须有在此通道上的Write权限, 默认是Admin
-- 实例化可以指定背书策略,  这个例子的策略是, 组织1或组织2的任何一个member
-- 链码实例化后进入ready状态.
+- 在指定通道上对安装过的链码进行实例化, 链码在实例化之前是和通道无关的, 实例化的时候才绑定通道.
+- 需提供初始化参数, 节点会创建容器, 并调用链码的 Init 方法进行初始化操作
+- 实例化链码过程会与 Orderer 和 Peer 节点打交道
+- 执行实例化的用户,必须有在此通道上的 Write 权限, 默认是Admin
+- 实例化可以指定背书策略,  上面例子的背书策略是, 组织1或组织2的任何一个 member
+- 链码实例化后进入 ready 状态.
 
 ### 链码实例化过程
 
 ![](_images/instantiate_cc_flow.png)
 
-### 实现
+### 客户端实现
 
 代码在peer/chaincode/instantiate.go
 

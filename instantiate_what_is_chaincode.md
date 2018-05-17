@@ -1,6 +1,6 @@
-## 实例化链码-什么是链码
+## 实例化链码 - 系统链码与用户链码
 
-链码分为系统链码和用户链码.
+链码( chaincode )分为系统链码和用户链码.
 
 ### 系统链码
 
@@ -12,7 +12,7 @@
 - 交易背书系统链码（ESCC）
 - 交易验证背书链码（VSCC）
 
-之前介绍过CSCC. 实例化链码会用到LSCC, ESCC和VSCC, ESCC和VSCC有默认的实现，也可以根据功能需求实现新的ESCC和VSCC. 
+之前介绍过CSCC. 实例化链码会用到LSCC, ESCC和VSCC有默认的实现，也可以根据功能需求实现新的ESCC和VSCC. 
 
 ### 用户链码
 
@@ -20,9 +20,9 @@
 
 它提供了基于分布式账本的状态处理逻辑. 它的生命周期被生命周期管理系统链码(LSCC)进程管理.
 
-它的代码,由开发人员完成后, install的peer节点, 然后在实例化绑定通道.
+它的代码,由开发人员完成后, install 到 peer 节点, 然后再实例化绑定通道.
 
-用户链码建立的是gRPC连接，系统链码建立的是Golang的通道连接
+用户链码与 Peer 之间建立的是 gRPC 连接，系统链码建立的是 Golang 的通道连接
 
 ### 共同点
 
@@ -40,7 +40,7 @@
   // 代码在core/chaincode/shim/interfaces.go
   ```
 
-  Invoke实现了查询接口,不需要专门的Query接口
+  > Invoke实现了查询接口, 不需要专门的Query接口
 
 - 链码通过shim.ChaincodeStubInterface 实现与账本的交互, 链码是不允许直接操作账本的.
 
@@ -48,157 +48,67 @@
   // ChaincodeStubInterface is used by deployable chaincode apps to access and
   // modify their ledgers
   type ChaincodeStubInterface interface {
-  	// GetArgs returns the arguments intended for the chaincode Init and Invoke
-  	// as an array of byte arrays.
+  	// 返回调用函数名称和参数的列表, 第一个元素是函数名称, 类型是字节数组
   	GetArgs() [][]byte
 
-  	// GetStringArgs returns the arguments intended for the chaincode Init and
-  	// Invoke as a string array. Only use GetStringArgs if the client passes
-  	// arguments intended to be used as strings.
+  	// 返回调用函数名称和参数的列表, 第一个元素是函数名称, 类型是字符串
   	GetStringArgs() []string
 
-  	// GetFunctionAndParameters returns the first argument as the function
-  	// name and the rest of the arguments as parameters in a string array.
-  	// Only use GetFunctionAndParameters if the client passes arguments intended
-  	// to be used as strings.
+  	// 分别返回调用的函数名称和参数, 类型是字符串
   	GetFunctionAndParameters() (string, []string)
 
-  	// GetArgsSlice returns the arguments intended for the chaincode Init and
-  	// Invoke as a byte array
+  	// 返回调用函数名称和参数拼接在一个的字符数组. 有什么用呢?
   	GetArgsSlice() ([]byte, error)
 
-  	// GetTxID returns the tx_id of the transaction proposal (see ChannelHeader
-  	// in protos/common/common.proto)
+  	// 获取交易号, 每次调用这个值都是唯一的
   	GetTxID() string
 
-  	// InvokeChaincode locally calls the specified chaincode `Invoke` using the
-  	// same transaction context; that is, chaincode calling chaincode doesn't
-  	// create a new transaction message.
-  	// If the called chaincode is on the same channel, it simply adds the called
-  	// chaincode read set and write set to the calling transaction.
-  	// If the called chaincode is on a different channel,
-  	// only the Response is returned to the calling chaincode; any PutState calls
-  	// from the called chaincode will not have any effect on the ledger; that is,
-  	// the called chaincode on a different channel will not have its read set
-  	// and write set applied to the transaction. Only the calling chaincode's
-  	// read set and write set will be applied to the transaction. Effectively
-  	// the called chaincode on a different channel is a `Query`, which does not
-  	// participate in state validation checks in subsequent commit phase.
-  	// If `channel` is empty, the caller's channel is assumed.
+      // 根据指定条件查询状态数据库里存储的值
   	InvokeChaincode(chaincodeName string, args [][]byte, channel string) pb.Response
 
-  	// GetState returns the value of the specified `key` from the
-  	// ledger. Note that GetState doesn't read data from the writeset, which
-  	// has not been committed to the ledger. In other words, GetState doesn't
-  	// consider data modified by PutState that has not been committed.
-  	// If the key does not exist in the state database, (nil, nil) is returned.
+  	// 根据指定键查询状态数据库里存储的值
   	GetState(key string) ([]byte, error)
 
-  	// PutState puts the specified `key` and `value` into the transaction's
-  	// writeset as a data-write proposal. PutState doesn't effect the ledger
-  	// until the transaction is validated and successfully committed.
-  	// Simple keys must not be an empty string and must not start with null
-  	// character (0x00), in order to avoid range query collisions with
-  	// composite keys, which internally get prefixed with 0x00 as composite
-  	// key namespace.
+      // 向状态数据库写入键值对( 写入到读写集中, 记帐时才真正写入)
   	PutState(key string, value []byte) error
 
-  	// DelState records the specified `key` to be deleted in the writeset of
-  	// the transaction proposal. The `key` and its value will be deleted from
-  	// the ledger when the transaction is validated and successfully committed.
+  	// 删除状态数据库中对应的值
   	DelState(key string) error
 
-  	// GetStateByRange returns a range iterator over a set of keys in the
-  	// ledger. The iterator can be used to iterate over all keys
-  	// between the startKey (inclusive) and endKey (exclusive).
-  	// The keys are returned by the iterator in lexical order. Note
-  	// that startKey and endKey can be empty string, which implies unbounded range
-  	// query on start or end.
-  	// Call Close() on the returned StateQueryIteratorInterface object when done.
-  	// The query is re-executed during validation phase to ensure result set
-  	// has not changed since transaction endorsement (phantom reads detected).
+      // 查询状态数据库里键在[startKey, endKey)之间的值
   	GetStateByRange(startKey, endKey string) (StateQueryIteratorInterface, error)
 
-  	// GetStateByPartialCompositeKey queries the state in the ledger based on
-  	// a given partial composite key. This function returns an iterator
-  	// which can be used to iterate over all composite keys whose prefix matches
-  	// the given partial composite key. The `objectType` and attributes are
-  	// expected to have only valid utf8 strings and should not contain
-  	// U+0000 (nil byte) and U+10FFFF (biggest and unallocated code point).
-  	// See related functions SplitCompositeKey and CreateCompositeKey.
-  	// Call Close() on the returned StateQueryIteratorInterface object when done.
-  	// The query is re-executed during validation phase to ensure result set
-  	// has not changed since transaction endorsement (phantom reads detected).
+  	// 部分组合键查询
   	GetStateByPartialCompositeKey(objectType string, keys []string) (StateQueryIteratorInterface, error)
 
-  	// CreateCompositeKey combines the given `attributes` to form a composite
-  	// key. The objectType and attributes are expected to have only valid utf8
-  	// strings and should not contain U+0000 (nil byte) and U+10FFFF
-  	// (biggest and unallocated code point).
-  	// The resulting composite key can be used as the key in PutState().
+  	// 构造组合键
   	CreateCompositeKey(objectType string, attributes []string) (string, error)
 
-  	// SplitCompositeKey splits the specified key into attributes on which the
-  	// composite key was formed. Composite keys found during range queries
-  	// or partial composite key queries can therefore be split into their
-  	// composite parts.
+  	// 分割组合键
   	SplitCompositeKey(compositeKey string) (string, []string, error)
 
-  	// GetQueryResult performs a "rich" query against a state database. It is
-  	// only supported for state databases that support rich query,
-  	// e.g.CouchDB. The query string is in the native syntax
-  	// of the underlying state database. An iterator is returned
-  	// which can be used to iterate (next) over the query result set.
-  	// The query is NOT re-executed during validation phase, phantom reads are
-  	// not detected. That is, other committed transactions may have added,
-  	// updated, or removed keys that impact the result set, and this would not
-  	// be detected at validation/commit time.  Applications susceptible to this
-  	// should therefore not use GetQueryResult as part of transactions that update
-  	// ledger, and should limit use to read-only chaincode operations.
+  	// 根据指定条件查询状态数据库里存储的值
   	GetQueryResult(query string) (StateQueryIteratorInterface, error)
 
-  	// GetHistoryForKey returns a history of key values across time.
-  	// For each historic key update, the historic value and associated
-  	// transaction id and timestamp are returned. The timestamp is the
-  	// timestamp provided by the client in the proposal header.
-  	// GetHistoryForKey requires peer configuration
-  	// core.ledger.history.enableHistoryDatabase to be true.
-  	// The query is NOT re-executed during validation phase, phantom reads are
-  	// not detected. That is, other committed transactions may have updated
-  	// the key concurrently, impacting the result set, and this would not be
-  	// detected at validation/commit time. Applications susceptible to this
-  	// should therefore not use GetHistoryForKey as part of transactions that
-  	// update ledger, and should limit use to read-only chaincode operations.
+  	// 查询一个键的历史数据
   	GetHistoryForKey(key string) (HistoryQueryIteratorInterface, error)
 
-  	// GetCreator returns `SignatureHeader.Creator` (e.g. an identity)
-  	// of the `SignedProposal`. This is the identity of the agent (or user)
-  	// submitting the transaction.
+  	// 获取提交交易的身份信息 ( 包括 MSP 和证书信息 )
   	GetCreator() ([]byte, error)
 
-  	// GetTransient returns the `ChaincodeProposalPayload.Transient` field.
-  	// It is a map that contains data (e.g. cryptographic material)
-  	// that might be used to implement some form of application-level
-  	// confidentiality. The contents of this field, as prescribed by
-  	// `ChaincodeProposalPayload`, are supposed to always
-  	// be omitted from the transaction and excluded from the ledger.
+  	// 获取一些私密信息, 这部分信息不会写入账本数据
   	GetTransient() (map[string][]byte, error)
 
-  	// GetBinding returns the transaction binding
+  	// 获取交易的绑定信息, 包含随机数和提交交易的身份信息
   	GetBinding() ([]byte, error)
 
-  	// GetSignedProposal returns the SignedProposal object, which contains all
-  	// data elements part of a transaction proposal.
+  	// 获取签名的 Proposal, 签名者是和提交交易的身份是一样的
   	GetSignedProposal() (*pb.SignedProposal, error)
 
-  	// GetTxTimestamp returns the timestamp when the transaction was created. This
-  	// is taken from the transaction ChannelHeader, therefore it will indicate the
-  	// client's timestamp, and will have the same value across all endorsers.
+  	// 获取提交时的时间戳, 基于UTC
   	GetTxTimestamp() (*timestamp.Timestamp, error)
 
-  	// SetEvent allows the chaincode to propose an event on the transaction
-  	// proposal. If the transaction is validated and successfully committed,
-  	// the event will be delivered to the current event listeners.
+  	// 设置事件的名称和内容
   	SetEvent(name string, payload []byte) error
   }
   // 代码在core/chaincode/shim/interfaces.go

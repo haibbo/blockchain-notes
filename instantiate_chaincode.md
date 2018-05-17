@@ -1,6 +1,11 @@
 ## 链码实例化
 
-### 流程(客户端, Peer节点 和 链码容器)
+### 实例化步骤
+
+1. 调用LSCC的部署操作, 把链码计算哈希后生成的ChaincodeData存到链上
+2. 从节点文件系统中读取链码源码, 生成docker镜像执行初始化操作
+
+### 详细流程(客户端, Peer节点 和 链码容器)
 
 1. 客户端发送SignedProposal给背书节点
    - ChanelID:mychannel 
