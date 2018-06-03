@@ -35,7 +35,7 @@ func (e *Endorser) ProcessProposal(ctx context.Context, signedProp *pb.SignedPro
 	}
 	endorserLogger.Debugf("processing txid: %s", txid)
 
-	// 对应的channel有没有创建, 创建了就有账本
+	// 通过是否有账本来判断对应的channel有没有创建
 	lgr := peer.GetLedger(chainID)
 
     // 是否是重复交易

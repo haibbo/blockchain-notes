@@ -2,7 +2,7 @@
 
 BYFN用到的用户链码是examples/chaincode/go/chaincode_example02/chaincode_example02.go
 
-客户端调用的参数是["invoke","a","b","10"]. 在链码的Invoke函数中, 因为第一个参数是invoke所以调用了下面的invoke(i是小写). 它还支持delete query等.  参数代表的意思是 从a转10 到b.
+本次链码调用, 客户端使用的参数是["invoke","a","b","10"].会调用了下面的invoke(i是小写). 它同时支持delete query等.  参数代表的意思是 从a转10 到b.
 
 ```go
 
